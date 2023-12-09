@@ -12,6 +12,7 @@ class Connexion extends Model
         $idClient = $this->getIdClientParIdentifiants($username, $password);
         if ($idClient !== false) {
             // Démarrer la session si le compte existe
+            $this->supTempUser();
             $_SESSION['id'] = $idClient;
             $_SESSION['user'] = $username;
             if ($this->isAdmin($username, $password)){
@@ -60,6 +61,47 @@ class Connexion extends Model
             return false;
         }
     }
+    public function newTempUser()
+{
+    $sql = "SELECT MIN(customer_id) AS min_customer_id FROM logins;";
+    $resultat = $this->executerRequete($sql);
+    $row = $resultat->fetch(PDO::FETCH_ASSOC);
+    
+    // Vérifier si le résultat est NULL (table vide)
+    if ($row['min_customer_id'] === null) {
+        // Retourner une valeur par défaut pour le cas où la table est vide
+        return 0;
+    }
 
+    // Sinon, retourner le résultat décrémenté
+    return $row['min_customer_id'] - 1;
+}
+
+
+    public function createTempUser()
+    {
+        // Exemple d'insertion d'un utilisateur dans la table 'logins'
+        $sql = "INSERT INTO logins (`customer_id`) VALUES ( ? )";
+        $params = [$this->newTempUser()];
+        $_SESSION['id'] = $params;
+        $_SESSION['temp'] = true;
+        $this->executerRequete($sql, $params);
+    }
+
+    private function supTempUser()
+    {
+    if (isset($_SESSION['tmp'])) {
+        // Exemple de suppression d'un utilisateur dans la table 'logins'
+        $sql = "DELETE FROM logins WHERE customer_id = ?";
+        $params = [$_SESSION['id']];
+
+        // Exécuter la requête pour supprimer l'utilisateur temporaire
+        $this->executerRequete($sql, $params);
+
+        // Supprimer également le bool de temp de la session
+        unset($_SESSION['temp']);
+        unset($_SESSION['id']);
+    }
+    }
 
 }

@@ -72,7 +72,7 @@
         
     </style>
     {% block style %}{% endblock %}
-
+{{ session.temp }}{{ session.id }}
 </head>
 <body>
     <header>
@@ -117,7 +117,7 @@
                         Ajouter un Produit
                     </a>
                 {% endif %}
-                {% if session.id is defined %}
+                {% if session.user is defined %}
                     <a href="/Panier" class="navbar-brand d-flex align-items-center">
                         Bienvenue, {{ session.user }} !
                     </a>

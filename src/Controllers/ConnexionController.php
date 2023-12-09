@@ -34,6 +34,7 @@ class ConnexionController
     {
         // Déconnectez l'utilisateur en supprimant toutes les variables de session
         session_unset();
+        $_SESSION['id'] = -1;
 
         header('Location: /');
         exit();
