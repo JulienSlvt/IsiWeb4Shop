@@ -5,8 +5,25 @@
 {% endblock %} 
 
 {% block content %}
-    <h1 class="fw-light">Bienvenue sur la page des produits</h1>
-    <p class="lead text-muted">C'est du contenu de la page des produits.</p>
+    {% if produits %}  
+    <h1 class="fw-light">Bienvenue sur la page de la catégorie {{ categorie }}</h1>
+    <form action="/Produit/Categorie" method="POST" class="mt-4">
+        <div class="mb-3">
+            <label for="cat_name" class="form-label">Choisissez une catégorie :</label>
+            <select id="cat_name" name="cat_name" class="form-select">
+                {% for category in categories %}
+                    {% if category == categorie %}
+                        <option value="{{ category }}" selected>{{ category }}</option>
+                    {% else %}
+                        <option value="{{ category }}">{{ category }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Aller à la catégorie</button>
+    </form>
+
+    {% endif %}
 {% endblock %}
 
 {% block sourcestyle %}
@@ -34,11 +51,19 @@
                                         <small class="text-muted">Prix: {{ produit.price }} €</small>
                                     </p>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <div class="input-group">
-                                            <label for="quantity-{{ produit.id }}" class="visually-hidden">Quantité</label>
-                                            <input type="number" id="quantity-{{ produit.id }}" class="form-control form-control-lg" value="1" min="1">
-                                            <button type="button" class="btn btn-sm btn-primary">Ajouter au panier</button>
-                                        </div>
+                                    <div class="input-group">
+                                                <form action="/Panier/AjoutPanier" method="post">
+                                                    {# Ajoutez un champ pour la quantité, remplacez 'produit.id' par votre propre identifiant du produit #}
+                                                    <label for="quantity-{{ produit.id }}" class="visually-hidden">Quantité</label>
+                                                    <input type="number" id="quantity-{{ produit.id }}" name="quantite" class="form-control form-control-lg" value="1" min="1">
+                                                    
+                                                    {# Ajoutez un champ pour l'identifiant du produit, remplacez 'produit.id' par votre propre identifiant du produit #}
+                                                    <input type="hidden" name="produit" value="{{ produit.id }}">
+
+                                                    {# Ajoutez le bouton pour soumettre le formulaire #}
+                                                    <button type="submit" class="btn btn-sm btn-primary">Ajouter au panier</button>
+                                                </form>
+                                            </div>
                                     </div>
                                 </div>
                             </div>

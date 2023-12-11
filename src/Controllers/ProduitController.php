@@ -24,6 +24,7 @@ class ProduitController
         $twig->afficherpage('Produit','Ajout');
     }
 
+    
     public function Categorie($params = null)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

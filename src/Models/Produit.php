@@ -20,28 +20,49 @@ class Produit extends Model
 
 
     public function getCategories()
-{
-    $sql = "SELECT name FROM categories";
-    return $this->executerRequete($sql)->fetchAll(PDO::FETCH_COLUMN);
-}
+    {
+        $sql = "SELECT name FROM categories";
+        return $this->executerRequete($sql)->fetchAll(PDO::FETCH_COLUMN);
+    }
 
 
     public function getProduitByCategorie($cat_name)
-{
-    // Vérifiez si la catégorie est fournie
-    if (!empty($cat_name)) {
-        // Utilisez une requête préparée pour éviter l'injection SQL
-        $sql = "SELECT * FROM products WHERE cat_id = ?";
-        $parametres = [$this->getCatId($cat_name)];
+    {
+        // Vérifiez si la catégorie est fournie
+        if (!empty($cat_name)) {
+            // Utilisez une requête préparée pour éviter l'injection SQL
+            $sql = "SELECT * FROM products WHERE cat_id = ?";
+            $parametres = [$this->getCatId($cat_name)];
 
-        // Exécutez la requête préparée avec les paramètres
-        return $this->executerRequete($sql, $parametres)->fetchAll();
-    } else {
-        // Redirigez si la catégorie n'est pas fournie
-        header('Location: /Produit/'); // Ajoutez l'URL de redirection appropriée
-        exit();
+            // Exécutez la requête préparée avec les paramètres
+            return $this->executerRequete($sql, $parametres)->fetchAll();
+        } else {
+            // Redirigez si la catégorie n'est pas fournie
+            header('Location: /Produit/'); // Ajoutez l'URL de redirection appropriée
+            exit();
+        }
     }
-}
+
+    public function getProductById($id)
+    {
+        // Vérifiez si l'ID du produit est fourni
+        if (!empty($id)) {
+            // Utilisez une requête préparée pour éviter l'injection SQL
+            $sql = "SELECT * FROM products WHERE id = ?";
+            $parametres = [$id];
+
+            // Exécutez la requête préparée avec les paramètres
+            $resultat = $this->executerRequete($sql, $parametres);
+
+            // Retournez la première ligne (ou false si le produit n'est pas trouvé)
+            return $resultat->fetch(PDO::FETCH_ASSOC);
+        } else {
+            // Redirigez ou gérez l'erreur en conséquence (par exemple, ID de produit non valide)
+            // Vous pouvez personnaliser la gestion des erreurs selon vos besoins
+            header('Location: /Produit/');
+            exit();
+        }
+    }
 
     public function ajouterProduit($cat_name, $name, $description, $image, $price) 
     {

@@ -6,7 +6,6 @@
 {% block content %}
     <h1 class="fw-light">Bienvenue sur ma page d'Inscription</h1>
     <p class="lead text-muted">C'est du contenu de la page d'Inscription.</p>
-    <h1>Inscription</h1>
 
     
     <!-- Formulaire d'inscription -->

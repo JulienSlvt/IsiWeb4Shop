@@ -69,8 +69,8 @@ CREATE TABLE products (
 `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 `cat_id` TINYINT NOT NULL,
 `name` VARCHAR(150) NOT NULL,
-`description` TEXT NOT NULL, `image`
-VARCHAR(30) NOT NULL,
+`description` TEXT NOT NULL, 
+`image` VARCHAR(30) NOT NULL,
 `price` FLOAT NOT NULL
 );
 

@@ -1,4 +1,0 @@
-# app/config/routes.yaml
-inscription:
-    path: /inscription
-    controller: App\Controller\InscriptionController::inscription

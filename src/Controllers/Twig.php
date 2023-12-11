@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+use App\Models\Produit;
 
 class Twig
 {
@@ -12,6 +13,10 @@ class Twig
 
         // Ajoutez les données de session au tableau de données
         $data['session'] = $_SESSION;
+
+        $model = new Produit;
+        $categories = $model->getCategories();
+        $data['categories'] = $categories;
 
         $view = $page . '/' . $fonction . '.twig.php';
 

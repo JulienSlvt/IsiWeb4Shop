@@ -72,7 +72,7 @@
         
     </style>
     {% block style %}{% endblock %}
-{{ session.temp }}{{ session.id }}
+SESSION.TEMP={{ session.temp }}SESSION.ID={{ session.id }}
 </head>
 <body>
     <header>
@@ -90,14 +90,16 @@
                             ISIWEB4SHOP s'engage à rendre votre expérience d'achat en ligne simple, sécurisée et agréable.
                         </p>
                     </div>
-                    <div class="col-sm-4 offset-md-1 py-4">
-                        <h4 class="text-white">Produits</h4>
-                        <ul class="list-unstyled">
-                            <li><a href="/Produit/Boissons" class="text-white">Boissons</a></li>
-                            <li><a href="/Produit/Biscuits" class="text-white">Biscuits</a></li>
-                            <li><a href="/Produit/FruitsSecs" class="text-white">Fruits secs</a></li>
-                        </ul>
-                    </div>
+                    {% if categories %}
+                        <div class="col-sm-4 offset-md-1 py-4">
+                            <h4 class="text-white">Catégories</h4>
+                            <ul class="list-unstyled">
+                                {% for categorie in categories %}
+                                    <li><a href="/Produit/Categorie/{{ categorie }}" class="text-white">{{ categorie }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -106,11 +108,11 @@
                 <a href="/" class="navbar-brand d-flex align-items-center">
                     <strong>ISIWEB4SHOP</strong>
                 </a>
-                <a href="/Panier" class="navbar-brand d-flex align-items-center">
-                    Panier
-                </a>
                 <a href="/Produit" class="navbar-brand d-flex align-items-center">
                     Produits
+                </a>
+                <a href="/Panier" class="navbar-brand d-flex align-items-center">
+                    Panier
                 </a>
                 {% if session.admin is defined %}
                 <a href="/Produit/Ajout" class="navbar-brand d-flex align-items-center">

@@ -11,7 +11,6 @@ class Connexion extends Model
         // Vérifier si le compte existe
         $idClient = $this->getIdClientParIdentifiants($username, $password);
         if ($idClient !== false) {
-            // Démarrer la session si le compte existe
             $this->supTempUser();
             $_SESSION['id'] = $idClient;
             $_SESSION['user'] = $username;
@@ -23,6 +22,13 @@ class Connexion extends Model
             header('Location: /Connexion/Erreur');
         exit();
         }
+    }
+
+    public function deconnection()
+    {
+        session_unset();
+        header('Location: /');
+        exit();
     }
 
     private function isAdmin($username, $password)
@@ -81,16 +87,17 @@ class Connexion extends Model
     public function createTempUser()
     {
         // Exemple d'insertion d'un utilisateur dans la table 'logins'
-        $sql = "INSERT INTO logins (`customer_id`) VALUES ( ? )";
-        $params = [$this->newTempUser()];
-        $_SESSION['id'] = $params;
-        $_SESSION['temp'] = true;
-        $this->executerRequete($sql, $params);
+        $sql = "INSERT INTO logins (`customer_id`, `username`, `password`) VALUES (?, 'temp', 'temp')";
+        $userId = $this->newTempUser();
+        $_SESSION['id'] = $userId;  // Assign the user ID to the session
+        $_SESSION['temp'] = 1;
+        $this->executerRequete($sql, [$userId]);  // Pass the user ID as a parameter
     }
+
 
     private function supTempUser()
     {
-    if (isset($_SESSION['tmp'])) {
+    if (isset($_SESSION['temp'])) {
         // Exemple de suppression d'un utilisateur dans la table 'logins'
         $sql = "DELETE FROM logins WHERE customer_id = ?";
         $params = [$_SESSION['id']];
