@@ -120,7 +120,7 @@ SESSION.TEMP={{ session.temp }}SESSION.ID={{ session.id }}
                     </a>
                 {% endif %}
                 {% if session.user is defined %}
-                    <a href="/Panier" class="navbar-brand d-flex align-items-center">
+                    <a href="/Compte" class="navbar-brand d-flex align-items-center">
                         Bienvenue, {{ session.user }} !
                     </a>
                     <a href="/Connexion/Deconnexion" class="navbar-brand d-flex align-items-center">

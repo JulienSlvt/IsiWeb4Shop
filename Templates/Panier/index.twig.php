@@ -15,7 +15,9 @@
             {% for item in itemsInCart %}
                 <div class="col">
                     <div class="card shadow-sm">
-                        <img src="../../static/Images/{{ item.image }}" alt="{{ item.name }}" class="img-fluid reset-image-style">
+                        <a href="/Produit/Details/{{ item.id }}">
+                            <img src="../../static/Images/{{ item.image }}" alt="{{ item.name }}" class="img-fluid reset-image-style">
+                        </a>
                         <div class="card-body">
                             <p class="card-text">
                                 <a href="/Produit/Details/{{ item.id }}" class="text-decoration-none link-dark fs-5 fw-bold" style="transition: font-size 0.3s, color 0.3s;">
@@ -32,7 +34,7 @@
                                 <form action="/Panier/ModifierQuantite" method="post" class="row g-2">
                                     <div class="col-md-6">
                                         <label for="quantite" class="visually-hidden">Quantité</label>
-                                        <input type="number" id="quantite" name="quantite" class="form-control form-control-lg" value="{{ item.quantity }}" min="0" max="50">
+                                        <input type="number" id="quantite" name="quantite" class="form-control form-control-lg" value="{{ item.quantity }}" min="0" max="500">
                                     </div>
                                     <input type="hidden" name="produit" value="{{ item.id }}">
                                     <div class="col-md-6">

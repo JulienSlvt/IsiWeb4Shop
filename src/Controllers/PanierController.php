@@ -10,7 +10,6 @@ class PanierController
         // Instanciez votre modèle
         $model = new Panier();  // Remplacez VotreModel par le nom réel de votre modèle
 
-        // Supposons que votre modèle ait une fonction pour obtenir les articles dans le panier
         $itemsInCart = $model->getProduitsAvecQuantite();
         
         // Calculez le total du panier

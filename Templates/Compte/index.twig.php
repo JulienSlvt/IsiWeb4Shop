@@ -1,0 +1,63 @@
+{% extends "layout.php" %}
+
+{% block title %}
+    Compte
+{% endblock %}
+
+{% block content %}
+{% if session.user is defined %}
+    <div class="container">
+        <h1 class="fw-light mt-5">Votre Compte</h1>
+
+        <form method="post" action="/Compte/ModifierCompte" class="mt-4">
+            <div class="mb-3 row">
+                <div class="col-md-6">
+                    <label for="firstname" class="form-label">Prénom:</label>
+                    <input type="text" id="firstname" name="firstname" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="lastname" class="form-label">Nom:</label>
+                    <input type="text" id="lastname" name="lastname" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="add1" class="form-label">Adresse 1:</label>
+                <input type="text" id="add1" name="add1" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="add2" class="form-label">Adresse 2:</label>
+                <input type="text" id="add2" name="add2" class="form-control">
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-md-6">
+                    <label for="city" class="form-label">Ville:</label>
+                    <input type="text" id="city" name="city" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="postcode" class="form-label">Code postal:</label>
+                    <input type="text" id="postcode" name="postcode" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="phone" class="form-label">Téléphone:</label>
+                <input type="text" id="phone" name="phone" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </form>
+    </div>
+{% else %}
+    <div class="container mt-5">
+        <p class="lead text-danger">Vous n'avez pas l'autorisation d'accéder à cette page.</p>
+    </div>
+{% endif %}
+{% endblock %}

@@ -59,7 +59,7 @@
                                                 <form action="/Panier/AjoutPanier" method="post">
                                                     {# Ajoutez un champ pour la quantité, remplacez 'produit.id' par votre propre identifiant du produit #}
                                                     <label for="quantity-{{ produit.id }}" class="visually-hidden">Quantité</label>
-                                                    <input type="number" id="quantity-{{ produit.id }}" name="quantite" class="form-control form-control-lg" value="1" min="1" max="50">
+                                                    <input type="number" id="quantity-{{ produit.id }}" name="quantite" class="form-control form-control-lg" value="1" min="1" max="500">
                                                     <input type="hidden" name="produit" value="{{ produit.id }}">
                                                     {# Ajoutez le bouton pour soumettre le formulaire #}
                                                     <button type="submit" class="btn btn-sm btn-primary">Ajouter au panier</button>

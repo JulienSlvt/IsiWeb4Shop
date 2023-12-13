@@ -16,8 +16,8 @@ class Panier extends Model
         $existingItem = $this->getCartItem($order_id, $product_id);
 
         if ($existingItem) {
-            // Si le produit est déjà dans le panier, mettre à jour la quantité
-            $newQuantite = $existingItem['quantity'] + $quantite;
+            // Si le produit est déjà dans le panier, mettre à jour la quantité et bloquer la quantité max à 500
+            $newQuantite = min(500, $existingItem['quantity'] + $quantite);
             $this->modifierQuantiteDansPanier($order_id, $product_id, $newQuantite);
         } else {
             // Si le produit n'est pas dans le panier, l'ajouter

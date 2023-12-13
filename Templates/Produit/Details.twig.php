@@ -38,7 +38,7 @@
                             <form action="/Panier/AjoutPanier" method="post" class="row g-2">
                                 <div class="col-md-6">
                                     <label for="quantity-{{ produit.id }}" class="visually-hidden">Quantité</label>
-                                    <input type="number" id="quantite" name="quantite" class="form-control form-control-lg" value="1" min="1" max="50">
+                                    <input type="number" id="quantite" name="quantite" class="form-control form-control-lg" value="1" min="1" max="500">
                                 </div>
                                 <input type="hidden" name="produit" value="{{ produit.id }}">
                                 <div class="col-md-6">
