@@ -72,7 +72,6 @@
         
     </style>
     {% block style %}{% endblock %}
-SESSION.TEMP={{ session.temp }}SESSION.ID={{ session.id }}
 </head>
 <body>
     <header>
