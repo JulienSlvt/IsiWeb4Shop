@@ -42,4 +42,17 @@ class PanierController
         exit();
     }
 
+    public function ModifierQuantite()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Récupérez les paramètres du formulaire
+            $product_id = $_POST['produit'] ?? '';
+            $quantite = $_POST['quantite'] ?? '';
+            $connexion = new Panier;
+            $connexion->modifierQuantiteDansPanier($_SESSION['id'],$product_id,$quantite);
+        }
+        header('Location: /Panier');
+        exit();
+
+    }
 }

@@ -110,15 +110,41 @@ class Panier extends Model
         return $resultat->fetch(PDO::FETCH_ASSOC);
     }
 
-    private function modifierQuantiteDansPanier($order_id, $product_id, $quantite)
+    public function modifierQuantiteDansPanier($order_id, $product_id, $quantite)
     {
-        // Mettre à jour la quantité de l'élément dans le panier
-        $sql = "UPDATE orderitems SET `quantity` = ? WHERE `order_id` = ? AND `product_id` = ?";
-        $params = [$quantite, $order_id, $product_id];
+        if ($quantite != 0){
+            // Mettre à jour la quantité de l'élément dans le panier
+            $sql = "UPDATE orderitems SET `quantity` = ? WHERE `order_id` = ? AND `product_id` = ?";
+            $params = [$quantite, $order_id, $product_id];
 
-        // Exécuter la requête de mise à jour
-        $this->executerRequete($sql, $params);
+            // Exécuter la requête de mise à jour
+            $this->executerRequete($sql, $params);
+        } else {
+            $this->deleteProduct($order_id, $product_id, $quantite);
+        }
     }
+
+    private function deleteProduct($order_id, $product_id, $quantite)
+    {
+        if ($quantite != 0) {
+            // Mettre à jour la quantité de l'élément dans le panier
+            $sql = "UPDATE orderitems SET `quantity` = ? WHERE `order_id` = ? AND `product_id` = ?";
+            $params = [$quantite, $order_id, $product_id];
+
+            // Exécuter la requête de mise à jour
+            $this->executerRequete($sql, $params);
+        } else {
+            // Supprimer l'élément du panier
+            $sql = "DELETE FROM orderitems WHERE `order_id` = ? AND `product_id` = ?";
+            $params = [$order_id, $product_id];
+
+            // Exécuter la requête de suppression
+            $this->executerRequete($sql, $params);
+        }
+    }
+
+
+    
 
     private function ajouterNouvelItemAuPanier($order_id, $product_id, $quantite)
     {
@@ -172,7 +198,4 @@ class Panier extends Model
             $this->executerRequete($sql, $parametres);
         }
     }
-
-
-
 }
