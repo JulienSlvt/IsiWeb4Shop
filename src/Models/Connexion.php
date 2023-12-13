@@ -105,10 +105,14 @@ class Connexion extends Model
         // Exécuter la requête pour supprimer l'utilisateur temporaire
         $this->executerRequete($sql, $params);
 
+        // Exécuter la requête pour supporimer son panier
+        $panier = new Panier;
+        $panier->supPanier();
+
         // Supprimer également le bool de temp de la session
         unset($_SESSION['temp']);
         unset($_SESSION['id']);
-    }
+        }
     }
 
 }

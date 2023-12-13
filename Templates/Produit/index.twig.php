@@ -66,3 +66,4 @@
         <p>Aucun produit disponible.</p>
     {% endif %}
 {% endblock %}
+

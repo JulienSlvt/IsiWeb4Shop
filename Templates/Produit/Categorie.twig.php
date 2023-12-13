@@ -76,3 +76,14 @@
         <p>Aucun produit disponible.</p>
     {% endif %}
 {% endblock %}
+
+{% block script %}
+    {% if app.request.method == 'POST' %}
+        {# Traitement du formulaire (AjoutPanier) #}
+
+        {# Redirection vers la même page après le traitement #}
+        <script>
+            window.location.href = '/Produit/Accueil';
+        </script>
+    {% endif %}
+{% endblock %}

@@ -160,6 +160,19 @@ class Panier extends Model
         return $resultat->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function supPanier()
+    {
+        // Vérifiez si l'ID de commande est défini dans la session
+        if (isset($_SESSION['id'])) {
+            // Utilisez une requête DELETE pour supprimer les éléments du panier associés à l'ID de commande actuel
+            $sql = "DELETE FROM orderitems WHERE order_id = ?";
+            $parametres = [$_SESSION['id']];
+
+            // Exécutez la requête préparée avec les paramètres
+            $this->executerRequete($sql, $parametres);
+        }
+    }
+
 
 
 }

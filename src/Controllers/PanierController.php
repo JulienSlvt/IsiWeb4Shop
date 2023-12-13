@@ -38,7 +38,7 @@ class PanierController
             $connexion->ajouterAuPanier($product_id,$quantite);
         }
 
-        header('Location: /Panier');
+        header('Location: /Produit');
         exit();
     }
 

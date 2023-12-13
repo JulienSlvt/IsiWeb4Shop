@@ -160,6 +160,8 @@ SESSION.TEMP={{ session.temp }}SESSION.ID={{ session.id }}
     {% block sourcescript %}
         <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
     {% endblock %}
+    
+    {% block script %}{% endblock %}
 
 </body>
 
