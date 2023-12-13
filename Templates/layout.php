@@ -142,6 +142,7 @@ SESSION.TEMP={{ session.temp }}SESSION.ID={{ session.id }}
     </header>
 
     <main>
+        {% block contentexiste %}
         <section class="py-5 text-center container">
             <div class="row py-lg-5">
                 <div class="col-lg-6 col-md-8 mx-auto">
@@ -150,6 +151,7 @@ SESSION.TEMP={{ session.temp }}SESSION.ID={{ session.id }}
                 </div>
             </div>
         </section>
+        {% endblock %}
         {% block produit %}{% endblock %}
     </main>
 
@@ -161,7 +163,8 @@ SESSION.TEMP={{ session.temp }}SESSION.ID={{ session.id }}
         <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
     {% endblock %}
     
-    {% block script %}{% endblock %}
+    {% block script %}
+    {% endblock %}
 
 </body>
 

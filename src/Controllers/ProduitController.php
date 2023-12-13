@@ -24,7 +24,14 @@ class ProduitController
         $twig->afficherpage('Produit','Ajout');
     }
 
-    
+    public function Details($params)
+    {
+        $product_id = $params[0];
+        $modele = new Produit;
+        $produit = $modele->getProductById($product_id);
+        $twig = new Twig;
+        $twig->afficherpage('Produit','Details',['produit' => $produit]);
+    }
     public function Categorie($params = null)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

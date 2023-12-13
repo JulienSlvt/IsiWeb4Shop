@@ -24,46 +24,50 @@
 
 {% block produit %}
     {% if produits %}   
-        <div class="album py-5 bg-light">
-            <div class="container">
-                {% for categorie, listeProduits in produits %}
+        {% for categorie, listeProduits in produits %}
+            <div class="album py-5 bg-light">
+                <div class="container">
                     <h2>{{ categorie }}</h2>
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-4 g-3">
                         {% for produit in listeProduits %}
                             <div class="col">
                                 <div class="card shadow-sm">
-                                    <img src="{{ produit.image }}" alt="{{ produit.name }}" class="img-fluid reset-image-style">
+                                    {# Utilisez un lien autour de l'image ou du nom pour rediriger l'utilisateur #}
+                                    <a href="/Produit/Details/{{ produit.id }}">
+                                        <img src="../../static/Images/{{ produit.image }}" alt="{{ produit.name }}" class="img-fluid reset-image-style">
+                                    </a>
                                     <div class="card-body">
                                         <p class="card-text">
-                                            <strong>{{ produit.name }}</strong><br>
+                                            <a href="/Produit/Details/{{ produit.id }}" class="text-decoration-none link-dark fs-5 fw-bold" style="transition: font-size 0.3s, color 0.3s;">
+                                                {{ produit.name }}<br>
+                                            </a>
                                             {{ produit.description }}<br>
                                             <small class="text-muted">Prix: {{ produit.price }} €</small>
                                         </p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="input-group">
-                                                <form action="/Panier/AjoutPanier" method="post">
-                                                    {# Ajoutez un champ pour la quantité, remplacez 'produit.id' par votre propre identifiant du produit #}
-                                                    <label for="quantity-{{ produit.id }}" class="visually-hidden">Quantité</label>
-                                                    <input type="number" id="quantity-{{ produit.id }}" name="quantite" class="form-control form-control-lg" value="1" min="1">
-                                                    
-                                                    {# Ajoutez un champ pour l'identifiant du produit, remplacez 'produit.id' par votre propre identifiant du produit #}
-                                                    <input type="hidden" name="produit" value="{{ produit.id }}">
-
-                                                    {# Ajoutez le bouton pour soumettre le formulaire #}
+                                    </div>
+                                
+                                    <div class="card-body d-flex justify-content-between align-items-center">
+                                        <div class="input-group">
+                                            <form action="/Panier/AjoutPanier" method="post" class="row g-2">
+                                                <div class="col-md-6">
+                                                    <label for="quantite" class="visually-hidden">Quantité</label>
+                                                    <input type="number" id="quantite" name="quantite" class="form-control form-control-lg" value="1" min="1" max="50">
+                                                </div>
+                                                <input type="hidden" name="produit" value="{{ produit.id }}">
+                                                <div class="col-md-6">
                                                     <button type="submit" class="btn btn-sm btn-primary">Ajouter au panier</button>
-                                                </form>
-                                            </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         {% endfor %}
                     </div>
-                {% endfor %}
+                </div>
             </div>
-        </div>
+        {% endfor %}
     {% else %}
         <p>Aucun produit disponible.</p>
     {% endif %}
 {% endblock %}
-

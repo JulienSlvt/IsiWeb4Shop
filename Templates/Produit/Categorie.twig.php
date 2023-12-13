@@ -43,10 +43,14 @@
                     {% for produit in produits %}
                         <div class="col">
                             <div class="card shadow-sm">
-                                <img src="{{ produit.image }}" alt="{{ produit.name }}" class="img-fluid reset-image-style">
+                                <a href="/Produit/Details/{{ produit.id }}">
+                                    <img src="../../static/Images/{{ produit.image }}" alt="{{ produit.name }}" class="img-fluid reset-image-style">
+                                </a>
                                 <div class="card-body">
                                     <p class="card-text">
-                                        <strong>{{ produit.name }}</strong><br>
+                                        <a href="/Produit/Details/{{ produit.id }}" class="text-decoration-none link-dark fs-5 fw-bold" style="transition: font-size 0.3s, color 0.3s;">
+                                            <strong>{{ produit.name }}</strong><br>
+                                        </a>
                                         {{ produit.description }}<br>
                                         <small class="text-muted">Prix: {{ produit.price }} €</small>
                                     </p>
@@ -55,11 +59,8 @@
                                                 <form action="/Panier/AjoutPanier" method="post">
                                                     {# Ajoutez un champ pour la quantité, remplacez 'produit.id' par votre propre identifiant du produit #}
                                                     <label for="quantity-{{ produit.id }}" class="visually-hidden">Quantité</label>
-                                                    <input type="number" id="quantity-{{ produit.id }}" name="quantite" class="form-control form-control-lg" value="1" min="1">
-                                                    
-                                                    {# Ajoutez un champ pour l'identifiant du produit, remplacez 'produit.id' par votre propre identifiant du produit #}
+                                                    <input type="number" id="quantity-{{ produit.id }}" name="quantite" class="form-control form-control-lg" value="1" min="1" max="50">
                                                     <input type="hidden" name="produit" value="{{ produit.id }}">
-
                                                     {# Ajoutez le bouton pour soumettre le formulaire #}
                                                     <button type="submit" class="btn btn-sm btn-primary">Ajouter au panier</button>
                                                 </form>

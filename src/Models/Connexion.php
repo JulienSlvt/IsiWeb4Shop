@@ -11,9 +11,16 @@ class Connexion extends Model
         // Vérifier si le compte existe
         $idClient = $this->getIdClientParIdentifiants($username, $password);
         if ($idClient !== false) {
+            // On supprime l'utilisateur temporaire
             $this->supTempUser();
+
+            // On définit les variables de session
             $_SESSION['id'] = $idClient;
             $_SESSION['user'] = $username;
+
+            // On créer un cookie dans lequel on met l'id de connexion
+            $this->createCookieSession();
+
             if ($this->isAdmin($username, $password)){
                 $_SESSION['admin'] = true;
                 echo "Vous êtes adiministrateur";
@@ -27,6 +34,8 @@ class Connexion extends Model
     public function deconnection()
     {
         session_unset();
+        $this->deleteCookieSession();
+        $this->deleteCookieTemp();
         header('Location: /');
         exit();
     }
@@ -86,12 +95,33 @@ class Connexion extends Model
 
     public function createTempUser()
     {
-        // Exemple d'insertion d'un utilisateur dans la table 'logins'
-        $sql = "INSERT INTO logins (`customer_id`, `username`, `password`) VALUES (?, 'temp', 'temp')";
-        $userId = $this->newTempUser();
-        $_SESSION['id'] = $userId;  // Assign the user ID to the session
-        $_SESSION['temp'] = 1;
-        $this->executerRequete($sql, [$userId]);  // Pass the user ID as a parameter
+        // On vérifie si un cookie de connexion existe
+        if (isset($_COOKIE['temp'])){
+            // On définit la variable temp
+            $_SESSION['temp'] = $_COOKIE['temp'];
+
+            // On allonge la durée du cookie
+            $this->createCookieTemp();
+            
+        } elseif (isset($_COOKIE['id'])){
+            // On définit la variable id Session
+            $_SESSION['id'] = $_COOKIE['id'];
+
+            // On alonge la durée du cookie
+            $this->createCookieSession();
+        } else {
+            // Exemple d'insertion d'un utilisateur dans la table 'logins'
+            $sql = "INSERT INTO logins (`customer_id`, `username`, `password`) VALUES (?, 'temp', 'temp')";
+            $userId = $this->newTempUser();
+
+            // On définit les variables session
+            $_SESSION['id'] = $userId;
+            $_SESSION['temp'] = 1;
+
+            // On créer un cookie session
+            $this->createCookieSession();
+            $this->executerRequete($sql, [$userId]);  // Pass the user ID as a parameter
+        }
     }
 
 
@@ -115,4 +145,31 @@ class Connexion extends Model
         }
     }
 
+    private function createCookieSession()
+    {
+        // Créer un cookie d'une durée de 1 mois
+        setcookie('id', $_SESSION['id'], time() + 31 * 24 * 60 * 60 , '/');
+    }
+
+    private function deleteCookieSession()
+    {
+        if (isset($_COOKIE['id'])) {
+            // Créer un cookie d'une durée de 1 mois
+            setcookie('id','', time() - 31 * 24 * 60 * 60 , '/');
+        }
+    }
+
+    private function createCookieTemp()
+    {
+        // Créer un cookie temp d'une durée de 1 mois
+        setcookie('temp', true, time() + 31 * 24 * 60 * 60 , '/');
+    }
+
+    private function deleteCookieTemp()
+    {
+        if (isset($_COOKIE['temp'])) {
+            // Supprime le cookie temp
+            setcookie('temp', '', time() - 31 * 24 * 60 * 60 , '/');
+        }
+    }
 }

@@ -8,7 +8,7 @@ abstract class Model
     public function getBdd()
     {
         $host = 'localhost';
-        $dbname = 'isiweb';
+        $dbname = 'web4shop';
         $user = 'root';
         $password = '';
 
