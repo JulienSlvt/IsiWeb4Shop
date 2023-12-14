@@ -91,10 +91,10 @@
                     </div>
                     {% if categories %}
                         <div class="col-sm-4 offset-md-1 py-4">
-                            <h4 class="text-white">Catégories</h4>
+                        <h4><a href="/Produit/Categorie/" class="text-white">Catégories :</a></h4>
                             <ul class="list-unstyled">
                                 {% for categorie in categories %}
-                                    <li><a href="/Produit/Categorie/{{ categorie }}" class="text-white">{{ categorie }}</a></li>
+                                    <li><a href="/Produit/Categorie/{{ categorie|replace({' ': '_'}) }}" class="text-white">{{ categorie|capitalize }}</a></li>
                                 {% endfor %}
                             </ul>
                         </div>

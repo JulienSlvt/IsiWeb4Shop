@@ -52,6 +52,18 @@ class PanierController
         }
         header('Location: /Panier');
         exit();
+    }
+
+    public function deleteProduitDuPanier()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Récupérez les paramètres du formulaire
+            $product_id = $_POST['produit'] ?? '';
+            $connexion = new Panier;
+            $connexion->deleteProduct($_SESSION['id'],$product_id,0);
+        }
+        header('Location: /Panier');
+        exit();
 
     }
 }

@@ -14,6 +14,10 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-4 g-3">
             {% for item in itemsInCart %}
                 <div class="col">
+                    <form action="/Panier/deleteProduitDuPanier" method="post">
+                        <input type="hidden" name="produit" value="{{ item.id }}">
+                        <button type="submit" class="btn btn-sm btn-outline-danger bi bi-x"></button>
+                    </form>
                     <div class="card shadow-sm">
                         <a href="/Produit/Details/{{ item.id }}">
                             <img src="../../static/Images/{{ item.image }}" alt="{{ item.name }}" class="img-fluid reset-image-style">
@@ -64,5 +68,4 @@
             </div>
         </section>
     {% endif %}
-
 {% endblock %}

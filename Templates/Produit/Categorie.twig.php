@@ -6,16 +6,16 @@
 
 {% block content %}
     {% if produits %}  
-    <h1 class="fw-light">Bienvenue sur la page de la catégorie {{ categorie }}</h1>
+    <h1 class="fw-light">Bienvenue sur la page de la catégorie {{ categorie|replace({'_': ' '})|capitalize }}</h1>
     <form action="/Produit/Categorie" method="POST" class="mt-4">
         <div class="mb-3">
             <label for="cat_name" class="form-label">Choisissez une catégorie :</label>
             <select id="cat_name" name="cat_name" class="form-select">
                 {% for category in categories %}
-                    {% if category == categorie %}
-                        <option value="{{ category }}" selected>{{ category }}</option>
+                    {% if category|replace({' ': '_'}) == categorie %}
+                        <option value="{{ category }}" selected>{{ category|capitalize }}</option>
                     {% else %}
-                        <option value="{{ category }}">{{ category }}</option>
+                        <option value="{{ category }}">{{ category|capitalize }}</option>
                     {% endif %}
                 {% endfor %}
             </select>
@@ -38,7 +38,7 @@
     {% if produits %}   
         <div class="album py-5 bg-light">
             <div class="container">
-                <h2>{{ categorie }}</h2>
+                <h2>{{ categorie|replace({'_': ' '})|capitalize }}</h2>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-4 g-3">
                     {% for produit in produits %}
                         <div class="col">
@@ -75,16 +75,5 @@
         </div>
     {% else %}
         <p>Aucun produit disponible.</p>
-    {% endif %}
-{% endblock %}
-
-{% block script %}
-    {% if app.request.method == 'POST' %}
-        {# Traitement du formulaire (AjoutPanier) #}
-
-        {# Redirection vers la même page après le traitement #}
-        <script>
-            window.location.href = '/Produit/Accueil';
-        </script>
     {% endif %}
 {% endblock %}

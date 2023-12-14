@@ -14,7 +14,7 @@
             <select id="cat_name" name="cat_name" class="form-select">
                 <option value="" selected disabled>Choisissez une catégorie</option>
                 {% for category in categories %}
-                    <option value="{{ category }}">{{ category }}</option>
+                    <option value="{{ category }}">{{ category|capitalize }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -27,7 +27,7 @@
         {% for categorie, listeProduits in produits %}
             <div class="album py-5 bg-light">
                 <div class="container">
-                    <h2>{{ categorie }}</h2>
+                    <h2>{{ categorie|capitalize }}</h2>
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-4 g-3">
                         {% for produit in listeProduits %}
                             <div class="col">

@@ -124,7 +124,7 @@ class Panier extends Model
         }
     }
 
-    private function deleteProduct($order_id, $product_id, $quantite)
+    public function deleteProduct($order_id, $product_id, $quantite)
     {
         if ($quantite != 0) {
             // Mettre à jour la quantité de l'élément dans le panier
