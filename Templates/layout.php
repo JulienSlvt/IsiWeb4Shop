@@ -74,7 +74,6 @@
     {% block style %}{% endblock %}
 </head>
 <body>
-session.id{{ session.id }}
     <header>
         <div class="collapse bg-dark" id="navbarHeader">
             <div class="container">

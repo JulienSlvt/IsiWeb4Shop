@@ -98,11 +98,11 @@ INSERT INTO `customers` (`id`, `forname`, `surname`, `add1`, `add2`, `add3`, `po
 
 CREATE TABLE `delivery_addresses` (
   `id` int(11) NOT NULL,
-  `firstname` varchar(50) NOT NULL,
-  `lastname` varchar(50) NOT NULL,
+  `forname` varchar(50) NOT NULL,
+  `surname` varchar(50) NOT NULL,
   `add1` varchar(50) NOT NULL,
   `add2` varchar(50) NOT NULL,
-  `city` varchar(50) NOT NULL,
+  `add3` varchar(50) NOT NULL,
   `postcode` varchar(10) NOT NULL,
   `phone` varchar(20) NOT NULL,
   `email` varchar(150) NOT NULL
@@ -112,7 +112,7 @@ CREATE TABLE `delivery_addresses` (
 -- Déchargement des données de la table `delivery_addresses`
 --
 
-INSERT INTO `delivery_addresses` (`id`, `firstname`, `lastname`, `add1`, `add2`, `city`, `postcode`, `phone`, `email`) VALUES
+INSERT INTO `delivery_addresses` (`id`, `forname`, `surname`, `add1`, `add2`, `add3`, `postcode`, `phone`, `email`) VALUES
 (46, 'Christian', 'Hamida', '15 Rue de la paix', '', 'Saint Etienne', '42000', '0477213145', 'chr.hamida@gmail.com'),
 (47, 'Sarah', 'Hamida', 'ligne add1', 'ligne add2', 'Meximieux', '01800', '0612345678', 's.hamida@gmail.com'),
 (48, 'Jean-Benoît', 'Delaroche', 'ligne add1', 'ligne add2', 'Lyon', '69009', '0796321458', 'jb.delaroche@gmx.fr'),

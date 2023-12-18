@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+use App\Models\Adresse;
 use App\Models\Commande;
 use App\Models\Compte;
 use App\Models\Model;
@@ -54,13 +55,33 @@ class CommandeController
         // On vérifie s'il y a une commande en cours
         if ($commande)
         {
+            // On récupère customer_id
+            $customer_id = $_SESSION['id'];
             // On regarde si tous les champs nécessaires à la livraison sont complétés
             $model = new Compte;
-            $test = $model->champsCompletes($_SESSION['id']);
+            $test = $model->champsCompletes($customer_id);
             if ($test){
+
+                // On récupère l'id de la commande
+                $model = new Panier;
+                $order_id = $model->getOrderForCustomer($customer_id)['id'];
+                
                 // On passe la commande
                 $commande = new Commande;
                 $commande->passerCommande();
+
+                // On récupère le customer
+                $model = new Compte;
+                $customer = $model->getCustomer();
+
+                // On entre la nouvelle adresse dans la table si elle n'existe pas 
+                $model = new Adresse;
+                $adresseId = $model->getAdressId($customer['forname'], $customer['surname'], $customer['add1'], $customer['add2'], $customer['add3'], $customer['postcode'], $customer['phone'], $customer['email']);
+
+                // On modifie l'adresseId de la commande
+                $model = new Commande;
+                $model->modifierAdresse($order_id,$adresseId);
+
                 header('Location: /');
                 exit();
             } else {
@@ -78,6 +99,7 @@ class CommandeController
     public function ModifierCompte()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
             // Récupérer les données du formulaire POST
             $forname = $_POST['firstname'] ?? '';
             $surname = $_POST['lastname'] ?? '';
@@ -88,24 +110,21 @@ class CommandeController
             $phone = $_POST['phone'] ?? '';
             $email = $_POST['email'] ?? '';
 
-            // Vérifier si les valeurs sont définies
-            if (!empty($forname) && !empty($surname) && !empty($add1) && !empty($city) && !empty($postcode) && !empty($phone) && !empty($email)) {
-                // Obtenez l'ID de la session
-                $customer_id = $_SESSION['id'];
+            // Obtenez l'ID de la session
+            $customer_id = $_SESSION['id'];
 
-                // Instancier le modèle Compte
-                $model = new Compte;
+            // Instancier le modèle Compte
+            $model = new Compte;
 
-                // Appeler la fonction modifieCustomer du modèle
-                $model->modifieCustomer($customer_id, $forname, $surname, $add1, $add2, $city, $postcode, $phone, $email, 1);
+            // Appeler la fonction modifieCustomer du modèle
+            $model->modifieCustomer($customer_id, $forname, $surname, $add1, $add2, $city, $postcode, $phone, $email, 1);
 
-                // Rediriger vers une autre page après la modification
-                header('Location: /Commande/Commander');
-                exit();
-            }
-            // Cas où on utilise pas la méthode POST
-            header('Location: /');
+            // Rediriger vers une autre page après la modification
+            header('Location: /Commande/Commander');
             exit();
         }
+        // Cas où on utilise pas la méthode POST
+        header('Location: /');
+        exit();
     }
 }

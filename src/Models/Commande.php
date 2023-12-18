@@ -71,6 +71,19 @@ class Commande extends Model
         }
     }
 
+    public function modifierAdresse($order_id, $adresseId) {
+        // Vérifier si la commande existe
+        if ($this->commandeExiste($order_id)) {
+            // Mettre à jour le champ "status" de la commande
+            $sql = "UPDATE orders SET `delivery_add_id` = ? WHERE `id` = ?";
+            $params = [$adresseId, $order_id];
+            $this->executerRequete($sql, $params);
+            return true; // La mise à jour a réussi
+        } else {
+            return false; // La commande n'existe pas
+        }
+    }
+
     private function commandeExiste($order_id) {
         $sql = "SELECT COUNT(*) FROM orders WHERE `id` = ?";
         $params = [$order_id];

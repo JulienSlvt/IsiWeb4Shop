@@ -11,7 +11,7 @@ class Adresse extends Model
         $adresseId = $this->incrementAdresseId();
 
         // Requête SQL pour insérer une nouvelle adresse
-        $sql = "INSERT INTO adresses (adresse_id, forname, surname, add1, add2, add3, postcode, phone, email) 
+        $sql = "INSERT INTO delivery_addresses (id, forname, surname, add1, add2, add3, postcode, phone, email) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         // Paramètres de la requête
@@ -37,7 +37,7 @@ class Adresse extends Model
     public function getAdressId($forname, $surname, $add1, $add2, $add3, $postcode, $phone, $email)
     {
         // Requête SQL pour obtenir l'ID de l'adresse existante
-        $sql = "SELECT adresse_id FROM adresses 
+        $sql = "SELECT id FROM delivery_addresses 
                 WHERE forname = ? AND surname = ? AND add1 = ? AND add2 = ? AND add3 = ? AND postcode = ? AND phone = ? AND email = ?";
 
         // Paramètres de la requête
@@ -60,7 +60,7 @@ class Adresse extends Model
 
         // Si l'adresse existe, retourner son ID
         if ($row) {
-            return $row['adresse_id'];
+            return $row['id'];
         } else {
             // Si l'adresse n'existe pas, créer une nouvelle adresse
             $adresseId = $this->newAdresse($forname, $surname, $add1, $add2, $add3, $postcode, $phone, $email);
@@ -73,7 +73,7 @@ class Adresse extends Model
 
     public function incrementAdresseId()
     {
-        $sql = "SELECT MAX(adresse_id) AS derniereAdresseId FROM adresses";
+        $sql = "SELECT MAX(id) AS derniereAdresseId FROM delivery_addresses";
         $resultat = $this->executerRequete($sql);
 
         // Récupérer la valeur
