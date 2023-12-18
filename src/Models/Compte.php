@@ -52,11 +52,8 @@ class Compte extends Model
     }
 
 
-    public function createEmptyCustomer()
+    public function createEmptyCustomer($id)
     {
-        // ID récupéré à partir de la session
-        $id = $_SESSION['id'];
-
         // Requête SQL pour insérer un nouveau client avec des valeurs par défaut ou vides
         $sql = "INSERT INTO customers (id, forname, surname, add1, add2, add3, postcode, phone, email, registered) 
                 VALUES (?, '', '', '', '', '', '', '', '', 0)";
@@ -67,5 +64,35 @@ class Compte extends Model
         // Exécution de la requête
         $this->executerRequete($sql, $params);
     }
+
+    public function champsCompletes($customer_id)
+    {
+        // Requête SQL pour récupérer les données d'un client par son ID
+        $sql = "SELECT * FROM customers WHERE id = ?";
+
+        // Exécution de la requête avec l'ID en paramètre
+        $resultat = $this->executerRequete($sql, [$customer_id]);
+
+        // Récupération des données
+        $customer = $resultat->fetch(PDO::FETCH_ASSOC);
+
+        // Vérification des champs
+        if (
+            $customer['forname'] != '' &&
+            $customer['surname'] != '' &&
+            $customer['add1'] != '' &&
+            $customer['add3'] != '' &&
+            $customer['postcode'] != '' &&
+            $customer['phone'] != '' &&
+            $customer['email'] != ''
+        ) {
+            // Tous les champs sont complétés
+            return true;
+        } else {
+            // Certains champs ne sont pas complétés
+            return false;
+        }
+}
+
 
 }

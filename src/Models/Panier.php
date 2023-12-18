@@ -6,11 +6,15 @@ class Panier extends Model
 {
     public function ajouterAuPanier($product_id, $quantite)
     {
-        // Récupère le numéro de commande en cours du compte
+        // Créer une commende si elle existe pas 
         $this->ajoutOrder($_SESSION['id']);
 
+        // On récupère le numéro de commande
         $order = $this->getOrderForCustomer($_SESSION['id']);
         $order_id = $order['id'];
+
+        // Mets à jour total de la table orders
+        $this->addTotalPrice($order_id,$product_id,$quantite);
 
         // Vérifier si le produit est déjà dans le panier
         $existingItem = $this->getCartItem($order_id, $product_id);
@@ -23,6 +27,29 @@ class Panier extends Model
             // Si le produit n'est pas dans le panier, l'ajouter
             $this->ajouterNouvelItemAuPanier($order_id, $product_id, $quantite);
         }
+    }
+
+    private function addTotalPrice($order_id, $product_id, $quantite)
+    {
+        // On récupère total
+        $sql = "SELECT total FROM orders WHERE id = ?";
+        $params = [$order_id];
+
+        // Execution de la requete SQL
+        $resultat = $this->executerRequete($sql, $params);
+        $total = $resultat->fetch(PDO::FETCH_ASSOC)['total'];
+
+        // On récupère le produit
+        $prod = new Produit;
+        $produit = $prod->getProductById($product_id);
+
+        // On redéfinie total
+        $total = $total + $quantite * $produit['price'];
+        $sql = "UPDATE orders SET `total` = ? WHERE id = ?";
+        $params = [$total, $order_id];
+
+        // On éxecute la requete SQL
+        $resultat = $this->executerRequete($sql, $params);
     }
 
     public function getItemsInCart()
@@ -59,9 +86,13 @@ class Panier extends Model
     {
         // Vérifiez si l'ID du produit et l'ID de la commande sont fournis
         if (!empty($product_id) && isset($_SESSION['id'])) {
+
+            // On récupère l'id de la commande 
+            $order_id = $this->getOrderForCustomer($_SESSION['id'])['id'];
+
             // Utilisez une requête préparée pour obtenir la quantité du produit dans la commande
             $sql = "SELECT quantity FROM orderitems WHERE order_id = ? AND product_id = ?";
-            $parametres = [$_SESSION['id'], $product_id];
+            $parametres = [$order_id, $product_id];
 
             // Exécutez la requête préparée avec les paramètres
             $resultat = $this->executerRequete($sql, $parametres);
@@ -81,6 +112,11 @@ class Panier extends Model
         if (isset($_SESSION['id'])) {
             // On récupère l'id de commande
             $order = $this->getOrderForCustomer($_SESSION['id']);
+
+            if (!$order){
+                $this->ajoutOrder($_SESSION['id']);
+                $order = $this->getOrderForCustomer($_SESSION['id']);
+            }
             $order_id = $order['id'];
 
             // Utilisez une requête préparée avec une jointure pour obtenir tous les produits avec leurs quantités dans la commande
@@ -117,6 +153,12 @@ class Panier extends Model
 
     public function modifierQuantiteDansPanier($order_id, $product_id, $quantite)
     {
+        // On récupère la quantité présente dans le panier 
+        $quantitePanier = $this->getQuantite($product_id);
+
+        // On mets a jour total
+        $this->addTotalPrice($order_id,$product_id,$quantite - $quantitePanier);
+
         if ($quantite != 0){
             // Mettre à jour la quantité de l'élément dans le panier
             $sql = "UPDATE orderitems SET `quantity` = ? WHERE `order_id` = ? AND `product_id` = ?";
@@ -131,6 +173,13 @@ class Panier extends Model
 
     public function deleteProduct($order_id, $product_id, $quantite)
     {
+
+        // On récupère la quantité présente dans le panier 
+        $quantitePanier = $this->getQuantite($product_id);
+
+        // On mets a jour total
+        $this->addTotalPrice($order_id,$product_id,$quantite - $quantitePanier);
+
         if ($quantite != 0) {
             // Mettre à jour la quantité de l'élément dans le panier
             $sql = "UPDATE orderitems SET `quantity` = ? WHERE `order_id` = ? AND `product_id` = ?";
@@ -167,7 +216,6 @@ class Panier extends Model
         // Vérifier si une commande existe déjà pour le client
         // Il faudra modifier ou creer une autre fonction pour vérifier l'ata de la commande
         $existingOrder = $this->getOrderForCustomer($customer_id);
-        echo var_dump($existingOrder);
         if (!$existingOrder) {
             // Si aucune commande n'existe, ajouter une nouvelle ligne
             $sql = "INSERT INTO orders (`customer_id`, `registered`, `delivery_add_id`, `payment_type`, `date`, `status`, `session`, `total`) 

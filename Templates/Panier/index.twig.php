@@ -67,7 +67,7 @@
                 <div class="col-lg-6 col-md-8 mx-auto">
                     <p>Total du panier : {{ totalCartPrice }} €</p>
                     {% if session.user is defined %}
-                    <a href="/Commande" class="text-decoration-none">
+                    <a href="/Commande/Commander" class="text-decoration-none">
                         <button type="button" class="btn btn-primary">Passer la commande</button>
                     </a>
                     {% else %}

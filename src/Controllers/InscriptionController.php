@@ -13,6 +13,7 @@ class InscriptionController
         $twig = new Twig;
         $twig->afficherpage('Inscription');
     }
+
     public function inscription()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -25,5 +26,11 @@ class InscriptionController
 
         header('Location: /');
         exit();
+    }
+
+    public function erreur()
+    {
+        $twig = new Twig;
+        $twig->afficherpage('Inscription','erreur');
     }
 }

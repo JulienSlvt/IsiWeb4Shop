@@ -30,7 +30,7 @@ class Connexion extends Model
             }
         } else {
             header('Location: /Connexion/Erreur');
-        exit();
+            exit();
         }
     }
 
@@ -42,6 +42,23 @@ class Connexion extends Model
         header('Location: /');
         exit();
     }
+
+    private function usernameExists($username)
+    {
+        // Requête SQL pour vérifier si le nom d'utilisateur existe déjà
+        $sql = "SELECT COUNT(*) AS count FROM logins WHERE username = ?";
+        $params = [$username];
+
+        // Exécution de la requête
+        $result = $this->executerRequete($sql, $params);
+
+        // Récupération du nombre de lignes correspondant à la requête
+        $count = $result->fetch(PDO::FETCH_ASSOC)['count'];
+
+        // Retourne vrai si le nom d'utilisateur existe déjà, faux sinon
+        return $count > 0;
+    }
+
 
     private function isAdmin($username, $password)
     {

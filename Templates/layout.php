@@ -74,6 +74,7 @@
     {% block style %}{% endblock %}
 </head>
 <body>
+session.id{{ session.id }}
     <header>
         <div class="collapse bg-dark" id="navbarHeader">
             <div class="container">
@@ -122,6 +123,9 @@
                     <a href="/Compte" class="navbar-brand d-flex align-items-center">
                         Bienvenue, {{ session.user }} !
                     </a>
+                    <a href="/Commande" class="navbar-brand d-flex align-items-center">
+                        Commandes
+                    </a>
                     <a href="/Connexion/Deconnexion" class="navbar-brand d-flex align-items-center">
                         Deconnexion
                     </a>
@@ -139,7 +143,6 @@
             </div>
         </div>
     </header>
-
     <main>
         {% block contentexiste %}
         <section class="py-5 text-center container">

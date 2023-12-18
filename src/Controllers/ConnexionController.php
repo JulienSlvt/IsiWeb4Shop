@@ -16,12 +16,15 @@ class ConnexionController
         $twig = new Twig;
         $twig->afficherpage('Connexion','erreur');
     }
+    
     public function connexion()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Récupérez les paramètres du formulaire
             $username = $_POST['username'] ?? '';
             $password = $_POST['password'] ?? '';
+
+            // On essaye de se connecter
             $connexion = new Connexion;
             $connexion->connecteUtilisateur($username,$password);
         }

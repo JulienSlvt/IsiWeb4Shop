@@ -33,8 +33,8 @@ class PanierController
             // Récupérez les paramètres du formulaire
             $product_id = $_POST['produit'] ?? '';
             $quantite = $_POST['quantite'] ?? '';
-            $connexion = new Panier;
-            $connexion->ajouterAuPanier($product_id,$quantite);
+            $panier = new Panier;
+            $panier->ajouterAuPanier($product_id,$quantite);
         }
 
         header('Location: /Produit');
@@ -52,7 +52,7 @@ class PanierController
             $model = new Panier;
             $order = $model->getOrderForCustomer($_SESSION['id']);
             $order_id = $order['id'];
-
+            
             // On modifie la quantité dans le panier
             $connexion = new Panier;
             $connexion->modifierQuantiteDansPanier($order_id,$product_id,$quantite);
