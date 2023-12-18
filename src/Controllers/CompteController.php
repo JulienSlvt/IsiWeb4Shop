@@ -42,8 +42,6 @@ class CompteController
                 // Appeler la fonction modifieCustomer du modèle
                 $model->modifieCustomer($customer_id, $forname, $surname, $add1, $add2, $city, $postcode, $phone, $email, 1);
 
-                // On regarde si toutes les données ont bien étées rentrées
-                
                 // Rediriger vers une autre page après la modification
                 header('Location: /Compte');
                 exit();
