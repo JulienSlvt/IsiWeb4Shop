@@ -6,6 +6,11 @@
 
 {% block contentexiste %}{% endblock %}
 
+{% block sourcestyle %}
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/font-awesome/all.min.css">
+{% endblock %}
+
 {% block produit %}
     {% if itemsInCart %}
     <div class="album py-5 bg-light">
@@ -14,17 +19,23 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-4 g-3">
             {% for item in itemsInCart %}
                 <div class="col">
-                    <form action="/Panier/deleteProduitDuPanier" method="post">
-                        <input type="hidden" name="produit" value="{{ item.id }}">
-                        <button type="submit" class="btn btn-sm btn-outline-danger bi bi-x"></button>
-                    </form>
                     <div class="card shadow-sm">
-                        <a href="/Produit/Details/{{ item.id }}">
-                            <img src="../../static/Images/{{ item.image }}" alt="{{ item.name }}" class="img-fluid reset-image-style">
-                        </a>
+                        <div style="position: relative;">
+                            <form action="/Panier/deleteProduitDuPanier" method="post" style="position: absolute; top: 0; left: 0;">
+                                <input type="hidden" name="produit" value="{{ item.id }}">
+                                <button type="submit" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer du panier">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                        <path d="M.644 0L0 .644 7.356 8 0 15.356l.644.644L8 8.644 15.356 16l.644-.644L8.644 8 16 .644 15.356 0 8 7.356.644 0z"/>
+                                    </svg>
+                                </button>
+                            </form>
+                            <a href="/Produit/Details/{{ item.id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.name }}">
+                                <img src="../../static/Images/{{ item.image }}" alt="{{ item.name }}" class="img-fluid reset-image-style">
+                            </a>
+                        </div>
                         <div class="card-body">
                             <p class="card-text">
-                                <a href="/Produit/Details/{{ item.id }}" class="text-decoration-none link-dark fs-5 fw-bold" style="transition: font-size 0.3s, color 0.3s;">
+                                <a href="/Produit/Details/{{ item.id }}" class="text-decoration-none link-dark fs-5 fw-bold" style="transition: font-size 0.3s, color 0.3s;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.name }}">
                                     {{ item.name }}<br>
                                 </a>
                                 {{ item.description }}<br>
@@ -55,7 +66,16 @@
             <div class="row py-lg-5">
                 <div class="col-lg-6 col-md-8 mx-auto">
                     <p>Total du panier : {{ totalCartPrice }} €</p>
-                    <button type="button" class="btn btn-primary">Passer la commande</button>
+                    {% if session.user is defined %}
+                    <a href="/Commande" class="text-decoration-none">
+                        <button type="button" class="btn btn-primary">Passer la commande</button>
+                    </a>
+                    {% else %}
+                        <a href="/Connexion" class="text-decoration-none">
+                            <button type="button" class="btn btn-primary">Connectez-vous</button>
+                        </a>
+                    {% endif %}
+                
                 </div>
             </div>
         </section>

@@ -47,8 +47,15 @@ class PanierController
             // Récupérez les paramètres du formulaire
             $product_id = $_POST['produit'] ?? '';
             $quantite = $_POST['quantite'] ?? '';
+
+            // On récupère l'id de commande
+            $model = new Panier;
+            $order = $model->getOrderForCustomer($_SESSION['id']);
+            $order_id = $order['id'];
+
+            // On modifie la quantité dans le panier
             $connexion = new Panier;
-            $connexion->modifierQuantiteDansPanier($_SESSION['id'],$product_id,$quantite);
+            $connexion->modifierQuantiteDansPanier($order_id,$product_id,$quantite);
         }
         header('Location: /Panier');
         exit();
@@ -59,8 +66,14 @@ class PanierController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Récupérez les paramètres du formulaire
             $product_id = $_POST['produit'] ?? '';
+
+            // On récupère l'id de commande
+            $model = new Panier;
+            $order = $model->getOrderForCustomer($_SESSION['id']);
+            $order_id = $order['id'];
+
             $connexion = new Panier;
-            $connexion->deleteProduct($_SESSION['id'],$product_id,0);
+            $connexion->deleteProduct($order_id,$product_id,0);
         }
         header('Location: /Panier');
         exit();

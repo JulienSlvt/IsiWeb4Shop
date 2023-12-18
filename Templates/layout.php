@@ -94,7 +94,7 @@
                         <h4><a href="/Produit/Categorie/" class="text-white">Catégories :</a></h4>
                             <ul class="list-unstyled">
                                 {% for categorie in categories %}
-                                    <li><a href="/Produit/Categorie/{{ categorie|replace({' ': '_'}) }}" class="text-white">{{ categorie|capitalize }}</a></li>
+                                    <li><a href="/Produit/Categorie/{{ categorie|replace({' ': '_'}) }}" class="text-white" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ categorie|capitalize }}">{{ categorie|capitalize }}</a></li>
                                 {% endfor %}
                             </ul>
                         </div>

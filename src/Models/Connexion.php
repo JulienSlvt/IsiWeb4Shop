@@ -11,6 +11,9 @@ class Connexion extends Model
         // Vérifier si le compte existe
         $idClient = $this->getIdClientParIdentifiants($username, $password);
         if ($idClient !== false) {
+
+            // Transfert de la commande 
+            
             // On supprime l'utilisateur temporaire
             $this->supTempUser();
 
@@ -144,6 +147,14 @@ class Connexion extends Model
         unset($_SESSION['id']);
         }
     }
+
+    // private function transverseCommande($newOrder)
+    // {
+    //     if (isset($_SESSION['temp'])) {
+            
+
+    //         }
+    //     }
 
     private function createCookieSession()
     {
