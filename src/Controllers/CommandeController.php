@@ -57,6 +57,7 @@ class CommandeController
         {
             // On récupère customer_id
             $customer_id = $_SESSION['id'];
+            
             // On regarde si tous les champs nécessaires à la livraison sont complétés
             $model = new Compte;
             $test = $model->champsCompletes($customer_id);
@@ -96,7 +97,7 @@ class CommandeController
         }
     }
 
-    public function ModifierCompte()
+    public function ModifierAdresse()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -124,7 +125,55 @@ class CommandeController
             exit();
         }
         // Cas où on utilise pas la méthode POST
+        header('Location: /Commande/Adresse');
+        exit();
+    }
+
+    public function Payer()
+    {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            // On récupère le moyen de paiement
+            $paiement = $_POST['paiement'] ?? '';
+
+            // On récupère la commande en cours
+            $model = new Panier;
+            $commande = $model->getOrderForCustomerPayer($_SESSION['id']);
+
+            // On vérifie s'il y a une commande en cours
+            if ($commande)
+            {
+                // On récupère customer_id
+                $customer_id = $_SESSION['id'];
+                
+                // On récupère l'id de la commande
+                $model = new Panier;
+                $order_id = $model->getOrderForCustomer($customer_id)['id'];
+                
+                // On paye la commande
+                $commande = new Commande;
+                $commande->payerCommande();
+
+                // On modifie payment_type dans la table orders
+                $commande->modifierPaiement($order_id,$paiement);
+
+                // On se redirige vers une autre page
+                header('Location: /');
+                exit();
+            } else {
+                // S'il n'y a pas de commande
+                header('Location: /');
+                exit();
+            }
+        }
+        // Si la méthode post n'est pas utilisée
         header('Location: /');
         exit();
+    }
+
+    public function ModifierPaiement()
+    {
+        
     }
 }

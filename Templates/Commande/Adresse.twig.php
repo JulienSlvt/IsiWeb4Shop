@@ -18,7 +18,7 @@
             <div class="container">
                 <h1 class="fw-light mt-5">Adresse de livraison</h1>
 
-                <form method="post" action="/Commande/ModifierCompte" class="mt-4">
+                <form method="post" action="/Commande/ModifierAdresse" class="mt-4">
                     <div class="mb-3 row">
                         <div class="col-md-6">
                             <label for="firstname" class="form-label">Prénom:</label>

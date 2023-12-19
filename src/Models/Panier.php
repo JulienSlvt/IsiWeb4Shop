@@ -259,6 +259,19 @@ class Panier extends Model
         return $resultat->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getOrderForCustomerPayer($customer_id)
+    {
+        // Récupérer la commande existante pour le client avec un statut égal à 0
+        $sql = "SELECT * FROM orders WHERE `customer_id` = ? AND `status` = 0 LIMIT 1";
+        $params = [$customer_id];
+
+        // Exécuter la requête de sélection
+        $resultat = $this->executerRequete($sql, $params);
+
+        // Retourner la première ligne (ou false si aucune commande n'est trouvée)
+        return $resultat->fetch(PDO::FETCH_ASSOC);
+    }
+
 
     public function supPanier()
     {

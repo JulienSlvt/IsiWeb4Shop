@@ -55,6 +55,14 @@ class Commande extends Model
         $model = new Panier;
         $order = $model->getOrderForCustomer($_SESSION['id']);
         $order_id = $order['id'];
+        $this->modifierStatus($order_id, 1);
+    }
+
+    public function payerCommande()
+    {
+        $model = new Panier;
+        $order = $model->getOrderForCustomer($_SESSION['id']);
+        $order_id = $order['id'];
         $this->modifierStatus($order_id, 2);
     }
 
@@ -64,6 +72,19 @@ class Commande extends Model
             // Mettre à jour le champ "status" de la commande
             $sql = "UPDATE orders SET `status` = ? WHERE `id` = ?";
             $params = [$nouveauStatus, $order_id];
+            $this->executerRequete($sql, $params);
+            return true; // La mise à jour a réussi
+        } else {
+            return false; // La commande n'existe pas
+        }
+    }
+
+    public function modifierPaiement($order_id, $paiement) {
+        // Vérifier si la commande existe
+        if ($this->commandeExiste($order_id)) {
+            // Mettre à jour le champ "status" de la commande
+            $sql = "UPDATE orders SET `payment_type` = ? WHERE `id` = ?";
+            $params = [$paiement, $order_id];
             $this->executerRequete($sql, $params);
             return true; // La mise à jour a réussi
         } else {
