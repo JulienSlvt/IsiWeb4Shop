@@ -138,6 +138,36 @@ class Panier extends Model
         }
     }
 
+    public function getProduitsAvecQuantitePayer($order)
+    {
+        // Vérifiez si l'ID de la commande est fourni
+        if (isset($_SESSION['id'])) {
+
+            if (!$order){
+                $this->ajoutOrder($_SESSION['id']);
+                $order = $this->getOrderForCustomerPayer($_SESSION['id']);
+            }
+            $order_id = $order['id'];
+
+            // Utilisez une requête préparée avec une jointure pour obtenir tous les produits avec leurs quantités dans la commande
+            $sql = "SELECT p.*, oi.quantity
+                    FROM orderitems oi
+                    JOIN products p ON oi.product_id = p.id
+                    JOIN orders o ON oi.order_id = o.id
+                    WHERE oi.order_id = ? AND o.status = 1";
+            $parametres = [$order_id];
+
+            // Exécutez la requête préparée avec les paramètres
+            $resultat = $this->executerRequete($sql, $parametres);
+
+            // Retournez un tableau associatif résultant avec tous les produits
+            return $resultat->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            // Retournez null si l'ID de la commande n'est pas fourni
+            return null;
+        }
+    }
+
     private function getCartItem($order_id, $product_id)
     {
         // Récupérer l'élément du panier existant
@@ -262,7 +292,7 @@ class Panier extends Model
     public function getOrderForCustomerPayer($customer_id)
     {
         // Récupérer la commande existante pour le client avec un statut égal à 0
-        $sql = "SELECT * FROM orders WHERE `customer_id` = ? AND `status` = 0 LIMIT 1";
+        $sql = "SELECT * FROM orders WHERE `customer_id` = ? AND `status` = 1 LIMIT 1";
         $params = [$customer_id];
 
         // Exécuter la requête de sélection

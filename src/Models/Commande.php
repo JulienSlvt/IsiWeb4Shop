@@ -58,11 +58,8 @@ class Commande extends Model
         $this->modifierStatus($order_id, 1);
     }
 
-    public function payerCommande()
+    public function payerCommande($order_id)
     {
-        $model = new Panier;
-        $order = $model->getOrderForCustomer($_SESSION['id']);
-        $order_id = $order['id'];
         $this->modifierStatus($order_id, 2);
     }
 

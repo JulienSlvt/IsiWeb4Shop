@@ -53,7 +53,7 @@ class CommandeController
         $commande = $model->getOrderForCustomer($_SESSION['id']);
 
         // On vérifie s'il y a une commande en cours
-        if ($commande)
+        if ($commande && $commande['total'] > 0)
         {
             // On récupère customer_id
             $customer_id = $_SESSION['id'];
@@ -65,11 +65,11 @@ class CommandeController
 
                 // On récupère l'id de la commande
                 $model = new Panier;
-                $order_id = $model->getOrderForCustomer($customer_id)['id'];
+                $order_id = $commande['id'];
                 
                 // On passe la commande
-                $commande = new Commande;
-                $commande->passerCommande();
+                $model = new Commande;
+                $model->passerCommande();
 
                 // On récupère le customer
                 $model = new Compte;
@@ -83,7 +83,8 @@ class CommandeController
                 $model = new Commande;
                 $model->modifierAdresse($order_id,$adresseId);
 
-                header('Location: /');
+                // On redirige vers la page de paiement
+                header('Location: /Commande/ModifierPaiement');
                 exit();
             } else {
                 // Si les champs ne sont pas completés
@@ -136,12 +137,10 @@ class CommandeController
 
             // On récupère le moyen de paiement
             $paiement = $_POST['paiement'] ?? '';
-
-            // On récupère la commande en cours
+            // On récupère la commande à payer
             $model = new Panier;
             $commande = $model->getOrderForCustomerPayer($_SESSION['id']);
-
-            // On vérifie s'il y a une commande en cours
+            // On vérifie s'il y a une commande à payer
             if ($commande)
             {
                 // On récupère customer_id
@@ -149,31 +148,57 @@ class CommandeController
                 
                 // On récupère l'id de la commande
                 $model = new Panier;
-                $order_id = $model->getOrderForCustomer($customer_id)['id'];
+                $order_id = $commande['id'];
                 
                 // On paye la commande
                 $commande = new Commande;
-                $commande->payerCommande();
+                $commande->payerCommande($order_id);
 
                 // On modifie payment_type dans la table orders
                 $commande->modifierPaiement($order_id,$paiement);
+
 
                 // On se redirige vers une autre page
                 header('Location: /');
                 exit();
             } else {
+                echo "ca marche pas";
                 // S'il n'y a pas de commande
                 header('Location: /');
                 exit();
             }
+        } else {
+            // Si la méthode post n'est pas utilisée
+            header('Location: /');
+            exit();
         }
-        // Si la méthode post n'est pas utilisée
-        header('Location: /');
-        exit();
     }
 
     public function ModifierPaiement()
     {
-        
+        // On récupère la commande à payer
+        $model = new Panier;
+        $commande = $model->getOrderForCustomerPayer($_SESSION['id']);
+
+        // On vérifie s'il y a une commande à payer
+        if ($commande)
+        {
+            // On récupère le panier à payer 
+            $panier = new Panier;
+            $items = $panier->getProduitsAvecQuantitePayer($commande);
+
+            // On récupère le moyen de paiement déjà inscrit
+            $paiement = $commande['payment_type'];
+
+            // On récupère le total à payer
+            $total = $commande['total'];
+
+            $twig = new Twig;
+            $twig->afficherpage('Commande','Paiement',['paiements' => ['Cheque', 'Espece', 'Carte', 'Paypal'],'paiementuser' => $paiement, 'itemsInCart' => $items, 'total' => $total]);
+        } else {
+            // S'il n'y a pas de commande à payer
+            header('Location: /');
+            exit();
+        }
     }
 }
