@@ -102,7 +102,7 @@ class Commande extends Model
         }
     }
 
-    private function commandeExiste($order_id) {
+    public function commandeExiste($order_id) {
         $sql = "SELECT COUNT(*) FROM orders WHERE `id` = ?";
         $params = [$order_id];
         $resultat = $this->executerRequete($sql, $params);

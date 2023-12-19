@@ -4,18 +4,26 @@
 {% endblock %} 
 
 {% block content %}
-    <h1 class="fw-light">Bienvenue sur ma page d'Inscription</h1>
-    <p class="lead text-muted">C'est du contenu de la page d'Inscription.</p>
-
-    
-    <!-- Formulaire d'inscription -->
-    <form method="post" action="/inscription/inscription">
-        <label for="username">Nom d'utilisateur:</label>
-        <input type="text" id="username" name="username" required>
+    <div class="container mt-5">
+        <h1 class="fw-light">Formulaire d'Inscription</h1>
         <br>
-        <label for="password">Mot de passe:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
-        <input type="submit" value="S'inscrire">
-    </form>
+        <form method="post" action="/inscription/inscription" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="username" class="form-label">Nom d'utilisateur:</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+                <div class="invalid-feedback">
+                    Veuillez fournir un nom d'utilisateur.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Mot de passe:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+                <div class="invalid-feedback">
+                    Veuillez fournir un mot de passe.
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">S'inscrire</button>
+        </form>
+    </div>
 {% endblock %}
+

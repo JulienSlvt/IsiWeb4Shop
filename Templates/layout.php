@@ -114,8 +114,8 @@
                     Panier
                 </a>
                 {% if session.admin is defined %}
-                <a href="/Produit/Ajout" class="navbar-brand d-flex align-items-center">
-                        Ajouter un Produit
+                <a href="/Admin" class="navbar-brand d-flex align-items-center">
+                        Admin
                     </a>
                 {% endif %}
                 {% if session.user is defined %}

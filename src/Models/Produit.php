@@ -74,7 +74,7 @@ class Produit extends Model
             $parametres = [$this->getCatId($cat_name), $name, $description, $image, $price];
     
             $this->executerRequete($sql, $parametres);
-            header('Location: /Produit');
+            header('Location: /Admin');
             exit();
 
         }

@@ -275,6 +275,17 @@ class Panier extends Model
         return $resultat->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getOrders()
+    {
+        // Récupérer toutes les commandes
+        $sql = "SELECT * FROM orders";
+
+        // Exécuter la requête de sélection
+        $resultat = $this->executerRequete($sql);
+
+        // Retourner toutes les lignes (ou un tableau vide si aucune commande n'est trouvée)
+        return $resultat->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function getOrderForCustomer($customer_id)
     {
