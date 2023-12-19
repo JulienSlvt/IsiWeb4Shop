@@ -7,15 +7,21 @@ class CompteController
 {
     public function index()
     {
-        $model = new Compte;
-        $compte = $model->getCustomer();
-        if (!$compte){
-            $model->createEmptyCustomer($_SESSION['id']);
+        if ($_SESSION['id']){
+            $model = new Compte;
             $compte = $model->getCustomer();
-        }
+            if (!$compte){
+                $model->createEmptyCustomer($_SESSION['id']);
+                $compte = $model->getCustomer();
+            }
 
-        $twig = new Twig;
-        $twig->afficherpage('Compte','index',['compte' => $compte]);
+            $twig = new Twig;
+            $twig->afficherpage('Compte','index',['compte' => $compte]);
+        } else {
+            // Rediriger si on est pas connecté
+            header('Location: /');
+            exit();
+        }
     }
 
     public function ModifierCompte()

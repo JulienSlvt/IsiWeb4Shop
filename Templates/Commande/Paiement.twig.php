@@ -33,9 +33,20 @@
             </form>
         {% endif %}
     {% else %}
-        <div class="container mt-5">
-            <p class="lead text-danger">Vous n'avez pas l'autorisation d'accéder à cette page.</p>
-        </div>
+        {% if paiements %}
+            <form action="/Commande/Payer" method="POST" class="mt-4">
+                <div class="mb-3">
+                    <p><label class="form-label">Prix à payer : {{ total }} €</label></p>
+                    <label for="paiement" class="form-label">Choisissez un moyen de paiement :</label>
+                    <select id="paiement" name="paiement" class="form-select">
+                        {% for p in paiements %}
+                            <option value="{{ p }}">{{ p }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Valider</button>
+            </form>
+        {% endif %}
     {% endif %}
 {% endblock %}
 

@@ -50,7 +50,11 @@ class PanierController
 
             // On récupère l'id de commande
             $model = new Panier;
-            $order = $model->getOrderForCustomer($_SESSION['id']);
+            if (isset($_SESSION['id'])){
+                $order = $model->getOrderForCustomer($_SESSION['id']);
+            } else {
+                $order = $model->getOrderForCustomer();
+            }
             $order_id = $order['id'];
             
             // On modifie la quantité dans le panier
@@ -69,7 +73,11 @@ class PanierController
 
             // On récupère l'id de commande
             $model = new Panier;
-            $order = $model->getOrderForCustomer($_SESSION['id']);
+            if (isset($_SESSION['id'])){
+                $order = $model->getOrderForCustomer($_SESSION['id']);
+            } else {
+                $order = $model->getOrderForCustomer();
+            }
             $order_id = $order['id'];
 
             $connexion = new Panier;

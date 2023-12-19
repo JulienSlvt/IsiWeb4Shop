@@ -66,16 +66,9 @@
             <div class="row py-lg-5">
                 <div class="col-lg-6 col-md-8 mx-auto">
                     <p>Total du panier : {{ totalCartPrice }} €</p>
-                    {% if session.user is defined %}
                     <a href="/Commande/ModifierAdresse" class="text-decoration-none">
                         <button type="button" class="btn btn-primary">Passer la commande</button>
                     </a>
-                    {% else %}
-                        <a href="/Connexion" class="text-decoration-none">
-                            <button type="button" class="btn btn-primary">Connectez-vous</button>
-                        </a>
-                    {% endif %}
-                
                 </div>
             </div>
         </section>

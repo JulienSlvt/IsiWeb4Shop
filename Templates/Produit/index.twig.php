@@ -5,8 +5,7 @@
 {% endblock %} 
 
 {% block content %}
-    <h1 class="fw-light">Bienvenue sur la page des produits</h1>
-    <p class="lead text-muted">C'est du contenu de la page des produits.</p>
+    <h1 class="fw-light">Voici les Produits disponibles</h1>
     {# Barre de choix des catégories #}
     <form action="/Produit/Categorie" method="POST" class="mt-4">
         <div class="mb-3">

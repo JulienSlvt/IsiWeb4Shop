@@ -53,7 +53,11 @@ class Commande extends Model
     public function passerCommande()
     {
         $model = new Panier;
-        $order = $model->getOrderForCustomer($_SESSION['id']);
+        if (isset($_SESSION['id'])){
+            $order = $model->getOrderForCustomer($_SESSION['id']);
+        } else {
+            $order = $model->getOrderForCustomer();
+        }
         $order_id = $order['id'];
         $this->modifierStatus($order_id, 1);
     }

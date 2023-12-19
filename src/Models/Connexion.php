@@ -15,7 +15,7 @@ class Connexion extends Model
             // Transfert de la commande 
             
             // On supprime l'utilisateur temporaire
-            $this->supTempUser();
+            session_unset();
 
             // On définit les variables de session
             $_SESSION['id'] = $idClient;
@@ -96,22 +96,6 @@ class Connexion extends Model
             return false;
         }
     }
-    public function newTempUser()
-{
-    $sql = "SELECT MIN(customer_id) AS min_customer_id FROM logins;";
-    $resultat = $this->executerRequete($sql);
-    $row = $resultat->fetch(PDO::FETCH_ASSOC);
-    
-    // Vérifier si le résultat est NULL (table vide)
-    if ($row['min_customer_id'] === null) {
-        // Retourner une valeur par défaut pour le cas où la table est vide
-        return 0;
-    }
-
-    // Sinon, retourner le résultat décrémenté
-    return $row['min_customer_id'] - 1;
-}
-
 
     public function createTempUser()
     {
@@ -129,54 +113,13 @@ class Connexion extends Model
 
             // On alonge la durée du cookie
             $this->createCookieSession();
-        } else {
-            // Exemple d'insertion d'un utilisateur dans la table 'logins'
-            $sql = "INSERT INTO logins (`customer_id`, `username`, `password`) VALUES (?, 'temp', 'temp')";
-            $userId = $this->newTempUser();
-
-            // On définit les variables session
-            $_SESSION['id'] = $userId;
-            $_SESSION['temp'] = 1;
-
-            // On créer un cookie session
-            $this->createCookieSession();
-            $this->executerRequete($sql, [$userId]);  // Pass the user ID as a parameter
         }
     }
-
-
-    private function supTempUser()
-    {
-    if (isset($_SESSION['temp'])) {
-        // Exemple de suppression d'un utilisateur dans la table 'logins'
-        $sql = "DELETE FROM logins WHERE customer_id = ?";
-        $params = [$_SESSION['id']];
-
-        // Exécuter la requête pour supprimer l'utilisateur temporaire
-        $this->executerRequete($sql, $params);
-
-        // Exécuter la requête pour supporimer son panier
-        $panier = new Panier;
-        $panier->supPanier();
-
-        // Supprimer également le bool de temp de la session
-        unset($_SESSION['temp']);
-        unset($_SESSION['id']);
-        }
-    }
-
-    // private function transverseCommande($newOrder)
-    // {
-    //     if (isset($_SESSION['temp'])) {
-            
-
-    //         }
-    //     }
 
     private function createCookieSession()
     {
         // Créer un cookie d'une durée de 1 mois
-        setcookie('id', $_SESSION['id'], time() + 31 * 24 * 60 * 60 , '/');
+        setcookie('id', session_id(), time() + 31 * 24 * 60 * 60 , '/');
     }
 
     private function deleteCookieSession()
