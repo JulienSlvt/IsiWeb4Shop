@@ -159,8 +159,12 @@ class CommandeController
             $phone = $_POST['phone'] ?? '';
             $email = $_POST['email'] ?? '';
 
+            $model = new Panier;
+            $order = $model->getOrderForCustomer();
+
             $model = new Adresse;
-            $model->getAdressId($forname, $surname, $add1, $add2, $city, $postcode, $phone, $email);
+            $add_id = $model->getAdressId($forname, $surname, $add1, $add2, $city, $postcode, $phone, $email);
+            $model->setAdress($order['id'], $add_id);
             
             // Rediriger vers une autre page après la modification
             header('Location: /Commande/Commander');

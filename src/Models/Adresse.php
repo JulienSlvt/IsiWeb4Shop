@@ -70,7 +70,6 @@ class Adresse extends Model
         }
     }
 
-
     public function incrementAdresseId()
     {
         $sql = "SELECT MAX(id) AS derniereAdresseId FROM delivery_addresses";
@@ -86,5 +85,15 @@ class Adresse extends Model
             // Aucune valeur trouvée (par exemple, si la table est vide)
             return 1;
         }
+    }
+
+    public function setAdress($order_id, $add_id)
+    {
+        // Prépare la requête SQL pour mettre à jour l'adresse de livraison dans la table orders
+        $sql = "UPDATE orders SET delivery_add_id = ? WHERE id = ?";
+        $params = [$add_id, $order_id];
+
+        // Exécute la requête
+        $this->executerRequete($sql, $params);
     }
 }
