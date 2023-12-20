@@ -11,11 +11,11 @@ class PanierController
         $model = new Panier();  // Remplacez VotreModel par le nom réel de votre modèle
 
         $itemsInCart = $model->getProduitsAvecQuantite();
-        
+
         // Calculez le total du panier
         $totalCartPrice = 0;
         foreach ($itemsInCart as $item) {
-            $totalCartPrice += $item['price'] * $item['quantity'];
+            $totalCartPrice += $item['price'] * $item['orderquantity'];
         }
 
         // Chargez la vue Twig en passant les données nécessaires
@@ -44,6 +44,7 @@ class PanierController
     public function ModifierQuantite()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
             // Récupérez les paramètres du formulaire
             $product_id = $_POST['produit'] ?? '';
             $quantite = $_POST['quantite'] ?? '';

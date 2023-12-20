@@ -88,6 +88,7 @@
                             Notre site sécurisé assure la confidentialité de vos transactions. Bénéficiez d'une livraison rapide et suivez votre commande en temps réel.
                             ISIWEB4SHOP s'engage à rendre votre expérience d'achat en ligne simple, sécurisée et agréable.
                         </p>
+                        <a href="/Commande/Acceder">Accedez à vos commandes</a>
                     </div>
                     {% if categories %}
                         <div class="col-sm-4 offset-md-1 py-4">

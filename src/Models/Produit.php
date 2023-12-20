@@ -64,6 +64,28 @@ class Produit extends Model
         }
     }
 
+    public function getProductsById($id_products)
+    {
+        // Vérifiez si l'ID du produit est fourni
+        if (!empty($id)) {
+
+            // Utilisez une requête préparée pour éviter l'injection SQL
+            $sql = "SELECT * FROM products WHERE id = ?";
+            $parametres = [$id];
+
+            // Exécutez la requête préparée avec les paramètres
+            $resultat = $this->executerRequete($sql, $parametres);
+
+            // Retournez la première ligne (ou false si le produit n'est pas trouvé)
+            return $resultat->fetch(PDO::FETCH_ASSOC);
+        } else {
+            // Redirigez ou gérez l'erreur en conséquence (par exemple, ID de produit non valide)
+            // Vous pouvez personnaliser la gestion des erreurs selon vos besoins
+            header('Location: /Produit/');
+            exit();
+        }
+    }
+
     public function ajouterProduit($cat_name, $name, $description, $image, $price) 
     {
         if (!$this->categorieExiste($cat_name)){
@@ -114,9 +136,83 @@ class Produit extends Model
 
         // Retournez vrai si la catégorie existe, faux sinon
         return $count > 0;
-}
+    }   
 
+    public function modifierQuantite($product_id, $new_quantity)
+    {
+        // Vérifiez si l'ID du produit est fourni
+        if (!empty($product_id)) {
+            // Utilisez une requête préparée pour éviter l'injection SQL
+            $sql = "UPDATE `products` SET `quantity` = ? WHERE `id` = ?";
+            $parametres = [$new_quantity, $product_id];
 
+            // Exécutez la requête préparée avec les paramètres
+            $this->executerRequete($sql, $parametres);
+
+            // Vous pouvez ajouter une logique supplémentaire si nécessaire, par exemple, gérer la réussite ou l'échec de la mise à jour
+            return true;
+        } else {
+            // Redirigez ou gérez l'erreur en conséquence (par exemple, ID de produit non valide)
+            // Vous pouvez personnaliser la gestion des erreurs selon vos besoins
+            return false;
+        }
+    }
+
+    public function modifierQuantiteOrder($order_id)
+    {
+        // Vérifiez si l'ID de la commande est fourni
+        if (!empty($order_id)) {
+            $produits_id = $this->getProduitsId($order_id);
+            foreach ($produits_id as $product_id)
+            {
+                $this->modifierQuantite($product_id,$this->getQuantiteProduit($product_id, $order_id) - $this->getQuantite($product_id, $order_id));
+            }
+            return true;
+        } else {
+            // Redirigez ou gérez l'erreur en conséquence (par exemple, ID de commande non valide)
+            // Vous pouvez personnaliser la gestion des erreurs selon vos besoins
+            return false;
+        }
+    }
+
+    public function getProduitsId($order_id)
+    {
+        $sql = "SELECT product_id FROM orderitems WHERE order_id = ?";
+        $params = [$order_id];
+
+        // Exécutez la requête préparée avec les paramètres
+        $resultat = $this->executerRequete($sql, $params);
+
+        return $resultat->fetchAll(PDO::FETCH_ASSOC)[0];
+    }
+
+    public function getQuantiteProduit($product_id, $order_id)
+    {
+            
+        // Utilisez une requête préparée pour obtenir la quantité du produit dans la commande
+        $sql = "SELECT quantity FROM products WHERE id = ?";
+        $parametres = [$product_id];
+
+        // Exécutez la requête préparée avec les paramètres
+        $resultat = $this->executerRequete($sql, $parametres);
+
+        // Retournez la quantité si le produit est trouvé, sinon, retournez 0
+        return $resultat->rowCount() > 0 ? $resultat->fetch(PDO::FETCH_ASSOC)['quantity'] : 0;
+    }
+
+    public function getQuantite($product_id, $order_id)
+    {
+            
+        // Utilisez une requête préparée pour obtenir la quantité du produit dans la commande
+        $sql = "SELECT quantity FROM orderitems WHERE order_id = ? AND product_id = ?";
+        $parametres = [$order_id, $product_id];
+
+        // Exécutez la requête préparée avec les paramètres
+        $resultat = $this->executerRequete($sql, $parametres);
+
+        // Retournez la quantité si le produit est trouvé, sinon, retournez 0
+        return $resultat->rowCount() > 0 ? $resultat->fetch(PDO::FETCH_ASSOC)['quantity'] : 0;
+    }
 
 
 }

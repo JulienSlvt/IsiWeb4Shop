@@ -55,16 +55,18 @@
                                         <small class="text-muted">Prix: {{ produit.price }} €</small>
                                     </p>
                                     <div class="d-flex justify-content-between align-items-center">
-                                    <div class="input-group">
-                                                <form action="/Panier/AjoutPanier" method="post">
-                                                    {# Ajoutez un champ pour la quantité, remplacez 'produit.id' par votre propre identifiant du produit #}
-                                                    <label for="quantity-{{ produit.id }}" class="visually-hidden">Quantité</label>
-                                                    <input type="number" id="quantity-{{ produit.id }}" name="quantite" class="form-control form-control-lg" value="1" min="1" max="500">
-                                                    <input type="hidden" name="produit" value="{{ produit.id }}">
-                                                    {# Ajoutez le bouton pour soumettre le formulaire #}
-                                                    <button type="submit" class="btn btn-sm btn-primary">Ajouter au panier</button>
-                                                </form>
-                                            </div>
+                                        <div class="input-group">
+                                            {% if produit.quantity > 0 %}
+                                            <form action="/Panier/AjoutPanier" method="post">
+                                                {# Ajoutez un champ pour la quantité, remplacez 'produit.id' par votre propre identifiant du produit #}
+                                                <label for="quantity-{{ produit.id }}" class="visually-hidden">Quantité</label>
+                                                <input type="number" id="quantity-{{ produit.id }}" name="quantite" class="form-control form-control-lg" value="1" min="1" max="{{ produit.quantity }}">
+                                                <input type="hidden" name="produit" value="{{ produit.id }}">
+                                                {# Ajoutez le bouton pour soumettre le formulaire #}
+                                                <button type="submit" class="btn btn-sm btn-primary">Ajouter au panier</button>
+                                            </form>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

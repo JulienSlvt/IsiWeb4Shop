@@ -22,7 +22,7 @@
         {% if commandes %}
         <div class="container mt-4">
             <h2>Vos Commandes</h2>
-                {% for order in commandes %}
+                {% for order in commandes|reverse %}
                     <div class="card mb-3">
                         <div class="card-header">
                             Commande #{{ order.id }}

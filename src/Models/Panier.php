@@ -27,10 +27,13 @@ class Panier extends Model
 
         // Vérifier si le produit est déjà dans le panier
         $existingItem = $this->getCartItem($order_id, $product_id);
+        $model = new Produit;
+        $product = $model->getProductById($product_id);
 
-        if ($existingItem) {
+        if ($existingItem) 
+        {
             // Si le produit est déjà dans le panier, mettre à jour la quantité et bloquer la quantité max à 500
-            $newQuantite = min(500, $existingItem['quantity'] + $quantite);
+            $newQuantite = min($product['quantity'], $existingItem['quantity'] + $quantite);
             $this->modifierQuantiteDansPanier($order_id, $product_id, $newQuantite);
         } else {
             // Si le produit n'est pas dans le panier, l'ajouter
@@ -64,14 +67,14 @@ class Panier extends Model
     public function getItemsInCart()
     {
         if (isset($_SESSION['id'])){
-            $sql = "SELECT * FROM orderitems WHERE `order_id` = ? AND 'status' = 0";
+            $sql = "SELECT * FROM products WHERE `order_id` = ?";
             $params = [$_SESSION['id']];
 
             $resultat = $this->executerRequete($sql, $params);
 
             return $resultat->fetchAll(PDO::FETCH_ASSOC);
         } else {
-            $sql = "SELECT * FROM orderitems WHERE `order_id` = ? AND 'status' = 0";
+            $sql = "SELECT * FROM products WHERE `order_id` = ?";
             $params = [$this->getOrderForCustomer()['id']];
 
             $resultat = $this->executerRequete($sql, $params);
@@ -153,7 +156,7 @@ class Panier extends Model
         $order_id = $order['id'];
 
         // Utilisez une requête préparée avec une jointure pour obtenir tous les produits avec leurs quantités dans la commande
-        $sql = "SELECT p.*, oi.quantity
+        $sql = "SELECT p.*, oi.quantity as orderquantity
                 FROM orderitems oi
                 JOIN products p ON oi.product_id = p.id
                 JOIN orders o ON oi.order_id = o.id
@@ -313,7 +316,7 @@ class Panier extends Model
 
     public function getOrdersForCustomer($customer_id = null)
     {
-        if ($customer_id = null){
+        if ($customer_id != null){
             // Récupérer toutes les commandes pour le client
             $sql = "SELECT * FROM orders WHERE `customer_id` = ?";
             $params = [$customer_id];
@@ -346,6 +349,18 @@ class Panier extends Model
 
         // Retourner toutes les lignes (ou un tableau vide si aucune commande n'est trouvée)
         return $resultat->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getOrderById($order_id)
+    {
+        // Récupérer toutes les commandes
+        $sql = "SELECT * FROM orders WHERE id = ?";
+        $params=[$order_id];
+
+        // Exécuter la requête de sélection
+        $resultat = $this->executerRequete($sql,$params);
+
+        return $resultat->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getOrderForCustomer($customer_id = null)

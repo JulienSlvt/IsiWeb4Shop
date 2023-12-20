@@ -40,7 +40,7 @@
                                 </a>
                                 {{ item.description }}<br>
                                 <small class="text-muted">Prix à l'unité : {{ item.price }} €</small><br>
-                                <small class="text-muted">Prix : {{ item.quantity * item.price }} €</small>
+                                <small class="text-muted">Prix : {{ item.orderquantity * item.price }} €</small>
                             </p>
                         </div>
                     
@@ -49,7 +49,7 @@
                                 <form action="/Panier/ModifierQuantite" method="post" class="row g-2">
                                     <div class="col-md-6">
                                         <label for="quantite" class="visually-hidden">Quantité</label>
-                                        <input type="number" id="quantite" name="quantite" class="form-control form-control-lg" value="{{ item.quantity }}" min="0" max="500">
+                                        <input type="number" id="quantite" name="quantite" class="form-control form-control-lg" value="{{ item.orderquantity }}" min="0" max="{{ item.quantity }}">
                                     </div>
                                     <input type="hidden" name="produit" value="{{ item.id }}">
                                     <div class="col-md-6">

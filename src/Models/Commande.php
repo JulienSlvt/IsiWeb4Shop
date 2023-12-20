@@ -2,6 +2,9 @@
 
 namespace App\Models;
 use PDO;
+use Defuse\Crypto\Crypto;
+use Defuse\Crypto\Key;
+use Symfony\Component\VarDumper\VarDumper;
 
 class Commande extends Model
 {
@@ -15,7 +18,7 @@ class Commande extends Model
                 JOIN orders o ON oi.order_id = o.id
                 WHERE o.customer_id = ? AND o.status = 0";
 
-        // Paramètres pour la requête
+        // Paramètres pour la requête session_id()
         $params = [$customer_id];
 
         // Exécution de la requête
@@ -59,6 +62,7 @@ class Commande extends Model
             $order = $model->getOrderForCustomer();
         }
         $order_id = $order['id'];
+
         $this->modifierStatus($order_id, 1);
     }
 
@@ -113,4 +117,17 @@ class Commande extends Model
         $count = $resultat->fetchColumn();
         return $count > 0;
     }
+
+
+    public function setOrderCripte($order_id)
+    {
+        return $order_id;
+    }
+
+
+    public function getOrderCripte($numCripte)
+    {
+        return $numCripte;
+    }
+
 }

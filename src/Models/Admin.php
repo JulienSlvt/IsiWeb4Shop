@@ -11,15 +11,15 @@ class Admin extends Model
         return false;
     }
 
-    public function ajouterProduit($cat_name, $name, $description, $image, $price) 
+    public function ajouterProduit($cat_name, $name, $description, $image, $price, $quantity) 
     {
         $produit = new Produit;
         if (!$produit->categorieExiste($cat_name)){
             $produit->ajouterCategorie($cat_name);
         }
         // Exemple d'insertion d'un utilisateur dans la table 'logins'
-        $sql = "INSERT INTO products (cat_id, name, description, image, price) VALUES (?, ?, ?, ?, ?)";
-        $parametres = [$produit->getCatId($cat_name), $name, $description, $image, $price];
+        $sql = "INSERT INTO products (cat_id, name, description, image, price, quantity) VALUES (?, ?, ?, ?, ?, ?)";
+        $parametres = [$produit->getCatId($cat_name), $name, $description, $image, $price, $quantity];
 
         $this->executerRequete($sql, $parametres);
         header('Location: /Admin');
@@ -34,6 +34,10 @@ class Admin extends Model
         // Vérifier si la commande existe
         if ($commande->commandeExiste($order_id)) {
             
+            // On mets à jour la quantite de produits présente dans la commande validée
+            $model = new Produit;
+            $model->modifierQuantiteOrder($order_id);
+
             // Valider la commande en mettant à jour le statut à 10
             $commande->modifierStatus($order_id, 10);
 

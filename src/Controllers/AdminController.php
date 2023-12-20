@@ -3,6 +3,7 @@
 namespace App\Controllers;
 use App\Models\Admin;
 use App\Models\Panier;
+use App\Models\Produit;
 
 class AdminController extends PanierController
 {
@@ -36,6 +37,51 @@ class AdminController extends PanierController
         }
     }
 
+    public function GererQuantites()
+    {
+        $model = new Admin;
+        if ($model->isAdmin()){
+
+            $products = new Produit;
+            $products = $products->getProduits();
+
+            $twig = new Twig;
+            $twig->afficherpage('Admin','Produits',['produits' => $products]);
+        } else {
+            // On gère le cas où ce n'est pas un administrateur qui accède à cette page 
+            header('Location: /');
+            exit();
+        }
+    }
+
+    public function modifierQuantites()
+    {
+        $model = new Admin;
+        if ($model->isAdmin()){
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+                // Récupérer les données du formulaire POST
+                $product_id = $_POST['product_id'] ?? '';
+                $quantity = $_POST['quantity'] ?? '';
+
+                // On modifie la quantité
+                $produit = new Produit;
+                $produit->modifierQuantite($product_id,$quantity);
+
+                // On se redirige vers gererQuantites
+                header('Location: /Admin/GererQuantites');
+                exit();
+            }
+            // On gère le cas où ce n'est pas la methode post qui est utilisée
+            header('Location: /');
+            exit();
+        } else {
+            // On gère le cas où ce n'est pas un administrateur qui accède à cette page 
+            header('Location: /');
+            exit();
+        }
+    }
+
     public function AjoutProduit()
     {
         $model = new Admin;
@@ -60,8 +106,9 @@ class AdminController extends PanierController
             $description = $_POST['description'] ?? '';
             $image = $_POST['image'] ?? '';
             $price = $_POST['price'] ?? '';
+            $quantity = $_POST['quantity'] ?? '';
             $produit = new Admin;
-            $produit->ajouterProduit($cat_name, $name, $description, $image, $price);
+            $produit->ajouterProduit($cat_name, $name, $description, $image, $price, $quantity);
         }
 
         header('Location: /');
@@ -87,9 +134,10 @@ class AdminController extends PanierController
                 // On se redirige sur la page des commandes
                 header('Location: /Admin/GererCommandes');
                 exit();
+            } else {
+                header('Location: /');
+                exit();
             }
-            header('Location: /');
-            exit();
         } else {
             // On gère le cas où ce n'est pas un administrateur qui accède à cette page 
             header('Location: /');

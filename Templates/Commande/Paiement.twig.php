@@ -71,6 +71,7 @@
                                 </a>
                                 {{ item.description }}<br>
                                 <small class="text-muted">Prix à l'unité : {{ item.price }} €</small><br>
+                                <small class="text-muted">Quantité : {{ item.quantity }} €</small><br>
                                 <small class="text-muted">Prix : {{ item.quantity * item.price }} €</small>
                             </p>
                         </div>

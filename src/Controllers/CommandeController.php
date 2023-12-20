@@ -6,6 +6,7 @@ use App\Models\Commande;
 use App\Models\Compte;
 use App\Models\Model;
 use App\Models\Panier;
+use App\Models\Produit;
 
 class CommandeController
 {
@@ -73,7 +74,6 @@ class CommandeController
             // On récupère la commande en cours
             $model = new Panier;
             $commande = $model->getOrderForCustomer($_SESSION['id']);
-
             // On vérifie s'il y a une commande en cours
             if ($commande && $commande['total'] > 0)
             {
@@ -236,9 +236,11 @@ class CommandeController
                 $commande->modifierPaiement($order_id,$paiement);
 
 
-                // On se redirige vers une autre page
-                header('Location: /');
-                exit();
+                $encrypted = $commande->setOrderCripte($order_id);
+
+                $twig = new Twig;
+                $twig->afficherpage('Commande','Commande',['encrypted' => $encrypted]);
+
             } else {
                 // S'il n'y a pas de commande
                 header('Location: /');
@@ -280,6 +282,31 @@ class CommandeController
             // S'il n'y a pas de commande à payer
             header('Location: /');
             exit();
+        }
+    }
+
+    public function Acceder($params = null)
+    {
+        if ($params != null)
+        {
+            $crypter = new Commande;
+            $order_id = $crypter->getOrderCripte($params[0]);
+
+            $model = new Panier;
+            $commande = $model->getOrderById($order_id);
+
+            // Affiche la page commande
+            $twig = new Twig;
+            $twig->afficherpage('Commande','Commande',['commande' => $commande]);
+        } else {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $order_id = $_POST['order_id'] ?? '';
+                header('Location: /Commande/Acceder/' . $order_id);
+                exit();
+            }
+            // Affiche la page commande
+            $twig = new Twig;
+            $twig->afficherpage('Commande','Commande');
         }
     }
 }

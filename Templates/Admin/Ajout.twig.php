@@ -7,6 +7,7 @@
 {% block content %}
     <a href="/Admin/AjoutProduit" class="btn btn-sm btn-success">Ajouter un produit</a>
     <a href="/Admin/GererCommandes" class="btn btn-sm btn-info">Gérer les commandes</a>
+    <a href="/Admin/GererQuantites" class="btn btn-sm btn-success">Gérer les quantités</a>
 {% endblock %}
 
 {% block produit %}
@@ -40,7 +41,10 @@
                     <label for="price" class="form-label">Prix:</label>
                     <input type="text" id="price" name="price" class="form-control" required>
                 </div>
-
+                <div class="mb-2">
+                    <label for="quantity" class="form-label">Quantite:</label>
+                    <input type="text" id="quantity" name="quantity" class="form-control" required>
+                </div>
                 <button type="submit" class="btn btn-primary">Ajouter</button>
             </form>
         </div>

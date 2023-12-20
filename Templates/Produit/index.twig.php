@@ -47,16 +47,16 @@
                                 
                                     <div class="card-body d-flex justify-content-between align-items-center">
                                         <div class="input-group">
-                                            <form action="/Panier/AjoutPanier" method="post" class="row g-2">
-                                                <div class="col-md-6">
-                                                    <label for="quantite" class="visually-hidden">Quantité</label>
-                                                    <input type="number" id="quantite" name="quantite" class="form-control form-control-lg" value="1" min="1" max="500">
-                                                </div>
-                                                <input type="hidden" name="produit" value="{{ produit.id }}">
-                                                <div class="col-md-6">
+                                            {% if produit.quantity > 0 %}
+                                                <form action="/Panier/AjoutPanier" method="post">
+                                                    {# Ajoutez un champ pour la quantité, remplacez 'produit.id' par votre propre identifiant du produit #}
+                                                    <label for="quantity-{{ produit.id }}" class="visually-hidden">Quantité</label>
+                                                    <input type="number" id="quantity-{{ produit.id }}" name="quantite" class="form-control form-control-lg" value="1" min="1" max="{{ produit.quantity }}">
+                                                    <input type="hidden" name="produit" value="{{ produit.id }}">
+                                                    {# Ajoutez le bouton pour soumettre le formulaire #}
                                                     <button type="submit" class="btn btn-sm btn-primary">Ajouter au panier</button>
-                                                </div>
-                                            </form>
+                                                </form>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>

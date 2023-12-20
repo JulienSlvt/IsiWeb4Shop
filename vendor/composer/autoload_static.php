@@ -46,6 +46,10 @@ class ComposerStaticInitf4c85e3ac5523f0f9fbd980cf9a8eb02
             'Psr\\EventDispatcher\\' => 20,
             'Psr\\Container\\' => 14,
         ),
+        'D' => 
+        array (
+            'Defuse\\Crypto\\' => 14,
+        ),
         'A' => 
         array (
             'App\\' => 4,
@@ -136,6 +140,10 @@ class ComposerStaticInitf4c85e3ac5523f0f9fbd980cf9a8eb02
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Defuse\\Crypto\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/defuse/php-encryption/src',
         ),
         'App\\' => 
         array (
