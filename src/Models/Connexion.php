@@ -107,7 +107,7 @@ class Connexion extends Model
             // On allonge la durée du cookie
             $this->createCookieTemp();
             
-        } elseif (isset($_COOKIE['id'])){
+        } if (isset($_COOKIE['id'])){
             // On définit la variable id Session
             $_SESSION['id'] = $_COOKIE['id'];
 
@@ -119,7 +119,7 @@ class Connexion extends Model
     private function createCookieSession()
     {
         // Créer un cookie d'une durée de 1 mois
-        setcookie('id', session_id(), time() + 31 * 24 * 60 * 60 , '/');
+        setcookie('id', $_SESSION['id'], time() + 31 * 24 * 60 * 60 , '/');
     }
 
     private function deleteCookieSession()

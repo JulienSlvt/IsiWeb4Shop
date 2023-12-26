@@ -29,7 +29,7 @@
         <tbody>
             {% for order in orders|reverse %}
                 <tr>
-                    <th scope="row">{{ order.id }}</th>
+                    <th scope="row"><a href="/Admin/VoirPanier/{{ order.id }}">{{ order.id }}</a></th>
                     <td>{{ order.customer_id }}</td>
                     <td>{{ order.registered }}</td>
                     <td>{{ order.delivery_add_id }}</td>

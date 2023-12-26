@@ -36,7 +36,6 @@ class PanierController
             $panier = new Panier;
             $panier->ajouterAuPanier($product_id,$quantite);
         }
-
         header('Location: /Produit');
         exit();
     }

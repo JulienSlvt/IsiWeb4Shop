@@ -165,7 +165,14 @@ class Produit extends Model
             $produits_id = $this->getProduitsId($order_id);
             foreach ($produits_id as $product_id)
             {
-                $this->modifierQuantite($product_id,$this->getQuantiteProduit($product_id, $order_id) - $this->getQuantite($product_id, $order_id));
+                $newQuantite = ($this->getQuantiteProduit($product_id, $order_id) - $this->getQuantite($product_id, $order_id));
+                if ($newQuantite >= 0){
+                    $this->modifierQuantite($product_id,$this->getQuantiteProduit($product_id, $order_id) - $this->getQuantite($product_id, $order_id));
+                } else {
+                    // On gère le cas ou la validation est impossible
+                    header('Location: /Error/Validation');
+                    exit();
+                }
             }
             return true;
         } else {

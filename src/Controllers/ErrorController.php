@@ -19,4 +19,9 @@ class ErrorController
         echo "Parametre manquant";
         require_once ROOT . '/Views/erreur404.php';
     }
+
+    public function validation()
+    {
+        require_once ROOT . '/Views/erreur1.php';
+    }
 }

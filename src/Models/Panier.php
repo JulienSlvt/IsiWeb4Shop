@@ -13,7 +13,7 @@ class Panier extends Model
             // On récupère le numéro de commande
             $order = $this->getOrderForCustomer($_SESSION['id']);
         } else {
-            // Créer une commende si elle existe pas 
+            // Créer une commande si elle existe pas 
             $this->ajoutOrder();
 
             // On récupère le numéro de commande
@@ -21,9 +21,6 @@ class Panier extends Model
         }
 
         $order_id = $order['id'];
-
-        // Mets à jour total de la table orders
-        $this->addTotalPrice($order_id,$product_id,$quantite);
 
         // Vérifier si le produit est déjà dans le panier
         $existingItem = $this->getCartItem($order_id, $product_id);
@@ -62,6 +59,23 @@ class Panier extends Model
 
         // On éxecute la requete SQL
         $resultat = $this->executerRequete($sql, $params);
+    }
+
+    public function getPanier($order_id)
+    {
+        // Utilisez une requête préparée avec une jointure pour obtenir tous les produits avec leurs quantités dans la commande
+        $sql = "SELECT p.*, oi.quantity as orderquantity
+                FROM orderitems oi
+                JOIN products p ON oi.product_id = p.id
+                JOIN orders o ON oi.order_id = o.id
+                WHERE oi.order_id = ?";
+        $parametres = [$order_id];
+
+        // Exécutez la requête préparée avec les paramètres
+        $resultat = $this->executerRequete($sql, $parametres);
+
+        // Retournez un tableau associatif résultant avec tous les produits
+        return $resultat->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getItemsInCart()
@@ -254,6 +268,9 @@ class Panier extends Model
 
     private function ajouterNouvelItemAuPanier($order_id, $product_id, $quantite)
     {
+        // Mets à jour total de la table orders
+        $this->addTotalPrice($order_id,$product_id,$quantite);
+
         // Ajouter un nouvel élément au panier
         $sql = "INSERT INTO orderitems (`order_id`, `product_id`, `quantity`) VALUES (?, ?, ?)";
         $params = [$order_id, $product_id, $quantite];

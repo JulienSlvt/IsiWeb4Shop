@@ -170,5 +170,35 @@ class AdminController extends PanierController
             exit();
         }
     }
+
+    public function voirPanier($params = null)
+    {
+        $model = new Admin;
+        if ($model->isAdmin() || $params = null){
+            
+            // Instanciez votre modèle
+            $model = new Panier();  // Remplacez VotreModel par le nom réel de votre modèle
+
+            $itemsInCart = $model->getPanier($params[0]);
+
+            // Calculez le total du panier
+            $totalCartPrice = 0;
+            foreach ($itemsInCart as $item) {
+                $totalCartPrice += $item['price'] * $item['orderquantity'];
+            }
+
+            // Chargez la vue Twig en passant les données nécessaires
+            $twig = new Twig;
+            $twig->afficherpage('Admin','VoirPanier',
+            [
+                'itemsInCart' => $itemsInCart,
+                'totalCartPrice' => $totalCartPrice,
+            ]);
+        } else {
+            // On gère le cas où ce n'est pas un administrateur qui accède à cette page 
+            header('Location: /');
+            exit();
+        }
+    }
     
 }

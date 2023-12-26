@@ -19,13 +19,18 @@ class ProduitController
         $twig->afficherpage('Produit','index',['produits' => $produits]);
     }
 
-    public function Details($params)
+    public function Details($params = null)
     {
+        if ($params != null){
         $product_id = $params[0];
         $modele = new Produit;
         $produit = $modele->getProductById($product_id);
         $twig = new Twig;
         $twig->afficherpage('Produit','Details',['produit' => $produit]);
+    } else {
+        header('Location: /Produit/Categorie');
+        exit();
+    }
     }
     public function Categorie($params = null)
     {
