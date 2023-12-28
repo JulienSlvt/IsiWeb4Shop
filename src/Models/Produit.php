@@ -191,8 +191,18 @@ class Produit extends Model
         // Exécutez la requête préparée avec les paramètres
         $resultat = $this->executerRequete($sql, $params);
 
-        return $resultat->fetchAll(PDO::FETCH_ASSOC)[0];
+        // Retournez tous les résultats sous forme de tableau associatif
+        $rows = $resultat->fetchAll(PDO::FETCH_ASSOC);
+
+        // Parcourez le tableau pour récupérer tous les IDs
+        $productIds = [];
+        foreach ($rows as $row) {
+            $productIds[] = $row['product_id'];
+        }
+
+        return $productIds;
     }
+
 
     public function getQuantiteProduit($product_id)
     {
