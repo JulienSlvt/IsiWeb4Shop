@@ -2,7 +2,7 @@
 
 ![image](https://github.com/JulienSlvt/IsiWeb/assets/145590138/3981ca51-1d97-4d09-84a7-02ae4abaf132)
 
-![image](https://github.com/JulienSlvt/IsiWeb/assets/145590138/f67b6aa6-18fd-46d4-a0ee-732c20a8b70e)
+![image](https://github.com/JulienSlvt/IsiWeb/assets/145590138/07c88951-3168-4a06-858e-fb52e441dced)
 
 ![image](https://github.com/JulienSlvt/IsiWeb/assets/145590138/851f161f-3257-4f16-ac23-ac04a159a62c)
 
