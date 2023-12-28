@@ -165,9 +165,10 @@ class Produit extends Model
             $produits_id = $this->getProduitsId($order_id);
             foreach ($produits_id as $product_id)
             {
-                $newQuantite = ($this->getQuantiteProduit($product_id, $order_id) - $this->getQuantite($product_id, $order_id));
+                echo var_dump($product_id);
+                $newQuantite = ($this->getQuantiteProduit($product_id) - $this->getQuantite($product_id, $order_id));
                 if ($newQuantite >= 0){
-                    $this->modifierQuantite($product_id,$this->getQuantiteProduit($product_id, $order_id) - $this->getQuantite($product_id, $order_id));
+                    $this->modifierQuantite($product_id,$newQuantite);
                 } else {
                     // On gère le cas ou la validation est impossible
                     header('Location: /Error/Validation');
@@ -193,7 +194,7 @@ class Produit extends Model
         return $resultat->fetchAll(PDO::FETCH_ASSOC)[0];
     }
 
-    public function getQuantiteProduit($product_id, $order_id)
+    public function getQuantiteProduit($product_id)
     {
             
         // Utilisez une requête préparée pour obtenir la quantité du produit dans la commande

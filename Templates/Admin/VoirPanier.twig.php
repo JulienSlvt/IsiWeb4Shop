@@ -18,7 +18,7 @@
     {% if itemsInCart %}
     <div class="album py-5 bg-light">
         <div class="container">
-            <h1 class="fw-light">Votre Panier</h1>
+            <h1 class="fw-light">Voir le Panier</h1>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-4 g-3">
             {% for item in itemsInCart %}
                 <div class="col">
@@ -43,16 +43,6 @@
                 </div>
             {% endfor %}
         </div>
-        <section class="py-5 text-center container">
-            <div class="row py-lg-5">
-                <div class="col-lg-6 col-md-8 mx-auto">
-                    <p>Total du panier : {{ totalCartPrice }} €</p>
-                    <a href="/Commande/ModifierAdresse" class="text-decoration-none">
-                        <button type="button" class="btn btn-primary">Passer la commande</button>
-                    </a>
-                </div>
-            </div>
-        </section>
     {% else %}
         <section class="py-5 text-center container">
             <div class="row py-lg-5">

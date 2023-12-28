@@ -7,6 +7,7 @@ use App\Models\Compte;
 use App\Models\Model;
 use App\Models\Panier;
 use App\Models\Produit;
+use FPDF;
 
 class CommandeController
 {
@@ -225,18 +226,39 @@ class CommandeController
             if ($commande)
             {
                 // On récupère l'id de la commande
-                $model = new Panier;
                 $order_id = $commande['id'];
                 
                 // On paye la commande
-                $commande = new Commande;
-                $commande->payerCommande($order_id);
+                $model = new Commande;
+                $model->payerCommande($order_id);
 
                 // On modifie payment_type dans la table orders
-                $commande->modifierPaiement($order_id,$paiement);
+                $model->modifierPaiement($order_id,$paiement);
 
 
-                $encrypted = $commande->setOrderCripte($order_id);
+                $encrypted = $model->setOrderCripte($order_id);
+
+                // On importe fpdf
+                require_once "fpdf/fpdf.php";
+
+                $pdf = new FPDF;
+
+                $pdf = new FPDF();
+                $pdf->AddPage();
+                $pdf->SetFont('Arial','',10);
+                $pdf->Cell(10,10,'Numero de suivi : ' . $encrypted);
+                $pdf->Ln();
+
+                $model = new Panier;
+                $produits = $model->getPanier($order_id);
+
+                foreach ($produits as $produit){
+                    $pdf->Cell(10,10,utf8_decode($produit['name']) . ' Quantite : ' . $produit['orderquantity'] . " Prix : " . $produit['price']*$produit['orderquantity'] . ' ' .  iconv('UTF-8', 'windows-1252', '€')); 
+                    $pdf->Ln();
+                }
+                $pdf->Cell(10,10, "Prix total : " . $commande['total'] . ' ' . iconv('UTF-8', 'windows-1252', '€'));
+                $pdf->Output();
+
 
                 $twig = new Twig;
                 $twig->afficherpage('Commande','Commande',['encrypted' => $encrypted]);

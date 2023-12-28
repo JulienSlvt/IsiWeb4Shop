@@ -131,9 +131,9 @@ class AdminController extends PanierController
                 $produit = new Admin;
                 $produit->validerCommande($order_id);
 
-                // On se redirige sur la page des commandes
-                header('Location: /Admin/GererCommandes');
-                exit();
+                // // On se redirige sur la page des commandes
+                // header('Location: /Admin/GererCommandes');
+                // exit();
             } else {
                 header('Location: /');
                 exit();
