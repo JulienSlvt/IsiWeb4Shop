@@ -10,5 +10,11 @@
 
 ![image](https://github.com/JulienSlvt/IsiWeb/assets/145590138/41f4eba5-fced-4255-b3d9-582066f6eac1)
 
+---Instructions d'installation (pour Laragon)---
 
-
+1. Installer Laragon https://laragon.org/download/ avec une version de php >= 8.1
+2. Mettre le dossier du projet dans laragon/www
+3. Via la base de donnée de laragon importer : Db\web4shop23-24.sql
+4. Installer les packages du composer.json
+5. Définir le chemin d'accès source du site comme étant laragon/www/IsiWeb4Shop/
+6. Lancer Apache et accedez au site via votre navigateur favori
