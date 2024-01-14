@@ -41,7 +41,8 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `username`, `password`) VALUES
-(1, 'john', 'f18bd055eec95965ee175fa9badd35ae6dbeb98f');
+(1, 'john', 'f18bd055eec95965ee175fa9badd35ae6dbeb98f'),
+(2, 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997');
 
 -- --------------------------------------------------------
 
@@ -137,7 +138,8 @@ CREATE TABLE `logins` (
 
 INSERT INTO `logins` (`id`, `customer_id`, `username`, `password`) VALUES
 (1, '1', 'Hamidou', 'd6ee53abcd3b045befa8af69f445fafc33f1f88b'),
-(2, '2', 'Delaroche', '56a5d2bd85e6c9956d122f59f79540ee0f75e5ad');
+(2, '2', 'Delaroche', '56a5d2bd85e6c9956d122f59f79540ee0f75e5ad'),
+(3, '3', 'admin' ,'d033e22ae348aeb5660fc2140aec35850c4da997');
 
 -- --------------------------------------------------------
 
